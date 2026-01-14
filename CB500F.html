@@ -27,66 +27,61 @@
   <main class="pt-32 pb-20 px-4 sm:px-6 lg:px-8">
     <div class="max-w-6xl mx-auto grid lg:grid-cols-2 gap-12 items-center">
 
-      <!-- IMAGEM / ILUSTRAÇÃO -->
-      <div class="card-gradient backdrop-blur-sm rounded-2xl border border-white/10 p-10">
-        <!-- Você pode trocar esse SVG por IMG depois -->
-        <svg class="w-full h-64 mx-auto" viewBox="0 0 200 150" fill="none">
-          <circle cx="40" cy="110" r="25" stroke="#38BDF8" stroke-width="3" />
-          <circle cx="160" cy="110" r="25" stroke="#38BDF8" stroke-width="3" />
-          <path d="M40 110 L60 70 L120 60 L150 80 L160 110" stroke="#FFFFFF" stroke-width="3" />
-          <path d="M70 65 Q90 45 110 55 L115 65 L75 70 Z" fill="#38BDF8" />
-          <ellipse cx="165" cy="75" rx="8" ry="10" fill="#FFE066" />
-        </svg>
-      </div>
+ <!-- IMAGEM -->
+  <div class="card-gradient backdrop-blur-md rounded-2xl border border-white/10 p-10 glow-border hover:scale-[1.02] transition-transform duration-500">
+    <img src="https://cdn.pixabay.com/photo/2017/08/06/22/01/motorcycle-2592262_1280.jpg" alt="Honda CB 500F" class="rounded-xl shadow-lg hover:opacity-90 transition"/>
+  </div>
 
-      <!-- INFORMAÇÕES -->
+  <!-- INFORMAÇÕES -->
+  <div>
+    <span class="text-sky-400 text-sm font-medium tracking-wide">Honda • 2024</span>
+    <h1 class="font-display text-5xl sm:text-6xl mt-3 mb-5 neon-text">
+      CB 500F
+    </h1>
+
+    <p class="text-white/70 leading-relaxed mb-8">
+      A Honda CB 500F é uma naked moderna e versátil, perfeita para quem busca equilíbrio entre potência, conforto e estilo. 
+      Seu design agressivo e tecnologia avançada garantem uma experiência de pilotagem única.
+    </p>
+
+    <!-- ESPECIFICAÇÕES -->
+    <div class="grid grid-cols-2 gap-4 mb-10">
+      <div class="bg-white/5 rounded-xl p-5 border border-white/10 hover:border-sky-400/40 transition">
+        <span class="text-white/40 text-sm">Motor</span>
+        <p class="text-white text-lg font-semibold">471cc</p>
+      </div>
+      <div class="bg-white/5 rounded-xl p-5 border border-white/10 hover:border-sky-400/40 transition">
+        <span class="text-white/40 text-sm">Potência</span>
+        <p class="text-white text-lg font-semibold">50 cv</p>
+      </div>
+      <div class="bg-white/5 rounded-xl p-5 border border-white/10 hover:border-sky-400/40 transition">
+        <span class="text-white/40 text-sm">Câmbio</span>
+        <p class="text-white text-lg font-semibold">6 marchas</p>
+      </div>
+      <div class="bg-white/5 rounded-xl p-5 border border-white/10 hover:border-sky-400/40 transition">
+        <span class="text-white/40 text-sm">Combustível</span>
+        <p class="text-white text-lg font-semibold">Gasolina</p>
+      </div>
+    </div>
+
+    <!-- PREÇO + CTA -->
+    <div class="flex items-center justify-between flex-wrap gap-6">
       <div>
-        <span class="text-sky-400 text-sm font-medium">Honda • 2024</span>
-        <h1 class="font-display text-4xl sm:text-5xl mt-2 mb-4">
-          CB 500F
-        </h1>
-
-        <p class="text-white/60 mb-6">
-          A Honda CB 500F é uma naked versátil, ideal para uso urbano e viagens.
-          Combina desempenho, conforto e economia.
-        </p>
-
-        <!-- ESPECIFICAÇÕES -->
-        <div class="grid grid-cols-2 gap-4 mb-8">
-          <div class="bg-white/5 rounded-xl p-4 border border-white/10">
-            <span class="text-white/40 text-sm">Motor</span>
-            <p class="text-white">471cc</p>
-          </div>
-          <div class="bg-white/5 rounded-xl p-4 border border-white/10">
-            <span class="text-white/40 text-sm">Potência</span>
-            <p class="text-white">50 cv</p>
-          </div>
-          <div class="bg-white/5 rounded-xl p-4 border border-white/10">
-            <span class="text-white/40 text-sm">Câmbio</span>
-            <p class="text-white">6 marchas</p>
-          </div>
-          <div class="bg-white/5 rounded-xl p-4 border border-white/10">
-            <span class="text-white/40 text-sm">Combustível</span>
-            <p class="text-white">Gasolina</p>
-          </div>
-        </div>
-
-        <!-- PREÇO + CTA -->
-        <div class="flex items-center justify-between flex-wrap gap-6">
-          <div>
-            <span class="text-white/40 text-sm">A partir de</span>
-            <div class="font-display text-4xl text-sky-400">
-              R$ 35.990
-            </div>
-          </div>
-
-          <a href="https://wa.me/55SEUNUMEROAQUI"
-             target="_blank"
-             class="bg-sky-500 hover:bg-sky-400 text-black font-semibold px-8 py-4 rounded-full transition">
-            Falar no WhatsApp
-          </a>
+        <span class="text-white/40 text-sm">A partir de</span>
+        <div class="font-display text-5xl text-sky-400 font-bold tracking-tight">
+          R$ 35.990
         </div>
       </div>
+
+      <a href="https://wa.me/55SEUNUMEROAQUI"
+         target="_blank"
+         class="bg-gradient-to-r from-sky-500 to-cyan-400 hover:from-sky-400 hover:to-cyan-300 text-black font-semibold px-10 py-4 rounded-full shadow-lg shadow-sky-500/30 transition-transform hover:scale-105">
+        Falar no WhatsApp
+      </a>
+    </div>
+  </div>
+
+</div>
 
     </div>
   </main>
