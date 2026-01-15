@@ -60,24 +60,44 @@
  </head>
  <body class="h-full font-body gradient-bg text-white overflow-auto">
   <div class="min-h-full w-full"><!-- Header -->
-   <header class="fixed top-0 left-0 right-0 z-50 backdrop-blur-md bg-black/30 border-b border-white/10">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-     <div class="flex items-center justify-between h-16 sm:h-20">
+  <header class="fixed top-0 left-0 right-0 z-50 backdrop-blur-md bg-black/30 border-b border-white/10">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-16 sm:h-20">
       <div class="flex items-center gap-3">
-       <svg class="w-10 h-10 sm:w-12 sm:h-12" viewbox="0 0 64 64" fill="none"><circle cx="16" cy="48" r="10" stroke="#38BDF8" stroke-width="3" fill="none" /> <circle cx="48" cy="48" r="10" stroke="#38BDF8" stroke-width="3" fill="none" /> <path d="M16 48 L24 28 L44 28 L54 38 L48 48" stroke="#38BDF8" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round" /> <path d="M28 28 L32 16 L40 16 L44 28" stroke="#38BDF8" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round" /> <circle cx="36" cy="22" r="3" fill="#38BDF8" />
-       </svg><span id="site-title" class="font-display text-2xl sm:text-3xl tracking-wider text-white">T-Power Motos</span>
+        <svg class="w-10 h-10 sm:w-12 sm:h-12" viewbox="0 0 64 64" fill="none">
+          <circle cx="16" cy="48" r="10" stroke="#38BDF8" stroke-width="3" fill="none" />
+          <circle cx="48" cy="48" r="10" stroke="#38BDF8" stroke-width="3" fill="none" />
+          <path d="M16 48 L24 28 L44 28 L54 38 L48 48" stroke="#38BDF8" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+          <path d="M28 28 L32 16 L40 16 L44 28" stroke="#38BDF8" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+          <circle cx="36" cy="22" r="3" fill="#38BDF8" />
+        </svg>
+        <!-- Aqui é onde o nome da loja foi atualizado para link -->
+        <a href="/" id="site-title" class="font-display text-2xl sm:text-3xl tracking-wider text-white hover:text-sky-400">
+          T-Power Motos
+        </a>
       </div>
-      <nav class="hidden md:flex items-center gap-8"><a href="#motos" class="text-white/80 hover:text +text-sky-400 transition-colors font-medium">Motos</a> <a href="#sobre" class="text-white/80 hover:text +text-sky-400 transition-colors font-medium">Sobre</a> <a href="#contato" class="text-white/80 hover:text+text-sky-400 transition-colors font-medium">Contato</a>
-      </nav><button class="md:hidden text-white p-2" onclick="toggleMenu()">
-       <svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-       </svg></button>
-     </div>
-    </div><!-- Mobile Menu -->
-    <div id="mobile-menu" class="hidden md:hidden bg-black/90 border-t border-white/10">
-     <div class="px-4 py-4 space-y-3"><a href="#motos" class="block text-white/80 hover:text bg-sky-500 transition-colors font-medium py-2">Motos</a> <a href="#sobre" class="block text-white/80 hover:textbg-sky-500 transition-colors font-medium py-2">Sobre</a> <a href="#contato" class="block text-white/80 hover:textbg-sky-500 transition-colors font-medium py-2">Contato</a>
-     </div>
+      <nav class="hidden md:flex items-center gap-8">
+        <a href="#motos" class="text-white/80 hover:text-sky-400 transition-colors font-medium">Motos</a>
+        <a href="#sobre" class="text-white/80 hover:text-sky-400 transition-colors font-medium">Sobre</a>
+        <a href="#contato" class="text-white/80 hover:text-sky-400 transition-colors font-medium">Contato</a>
+      </nav>
+      <button class="md:hidden text-white p-2" onclick="toggleMenu()">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </button>
     </div>
-   </header><!-- Hero Section -->
+  </div>
+  <!-- Mobile Menu -->
+  <div id="mobile-menu" class="hidden md:hidden bg-black/90 border-t border-white/10">
+    <div class="px-4 py-4 space-y-3">
+      <a href="#motos" class="block text-white/80 hover:text bg-sky-500 transition-colors font-medium py-2">Motos</a>
+      <a href="#sobre" class="block text-white/80 hover:text bg-sky-500 transition-colors font-medium py-2">Sobre</a>
+      <a href="#contato" class="block text-white/80 hover:text bg-sky-500 transition-colors font-medium py-2">Contato</a>
+    </div>
+  </div>
+</header>
+   <!-- Hero Section -->
    <section class="relative pt-32 sm:pt-40 pb-20 px-4 sm:px-6 lg:px-8 overflow-hidden">
     <div class="absolute inset-0 overflow-hidden">
      <div class="absolute top-20 right-0 w-96 h-96 +bg-sky-500/20 rounded-full blur-3xl"></div>
@@ -650,6 +670,7 @@
   </script>
  <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9bd5720816ed5f28',t:'MTc2ODMxMzA5NC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
+
 
 
 
