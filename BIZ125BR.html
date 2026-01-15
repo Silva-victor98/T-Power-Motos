@@ -27,16 +27,39 @@
   <main class="pt-32 pb-20 px-4 sm:px-6 lg:px-8">
     <div class="max-w-6xl mx-auto grid lg:grid-cols-2 gap-12 items-center">
 
-      <!-- IMAGEM / ILUSTRAÇÃO -->
-      <div class="card-gradient backdrop-blur-sm rounded-2xl border border-white/10 p-10">
-        <!-- Você pode trocar esse SVG por IMG depois -->
-        <svg class="w-full h-64 mx-auto" viewBox="0 0 200 150" fill="none">
-          <circle cx="40" cy="110" r="25" stroke="#38BDF8" stroke-width="3" />
-          <circle cx="160" cy="110" r="25" stroke="#38BDF8" stroke-width="3" />
-          <path d="M40 110 L60 70 L120 60 L150 80 L160 110" stroke="#FFFFFF" stroke-width="3" />
-          <path d="M70 65 Q90 45 110 55 L115 65 L75 70 Z" fill="#38BDF8" />
-          <ellipse cx="165" cy="75" rx="8" ry="10" fill="#FFE066" />
-        </svg>
+     <!-- GALERIA DE IMAGENS -->
+<div class="card-gradient backdrop-blur-sm rounded-2xl border border-white/10 p-6">
+
+  <!-- IMAGEM PRINCIPAL -->
+  <img
+    id="imagemPrincipal"
+    src="img/biz-1.jpg"
+    alt="Honda Biz 125"
+    class="w-full h-72 object-contain rounded-xl mb-6 transition"
+  />
+
+  <!-- MINIATURAS -->
+  <div class="flex gap-4 justify-center">
+    <img
+      src="img/biz-1.jpg"
+      onclick="trocarImagem(this)"
+      class="w-20 h-16 object-contain cursor-pointer rounded-lg border border-sky-400"
+    />
+
+    <img
+      src="img/biz-2.jpg"
+      onclick="trocarImagem(this)"
+      class="w-20 h-16 object-contain cursor-pointer rounded-lg border border-white/20 hover:border-sky-400"
+    />
+
+    <img
+      src="img/biz-3.jpg"
+      onclick="trocarImagem(this)"
+      class="w-20 h-16 object-contain cursor-pointer rounded-lg border border-white/20 hover:border-sky-400"
+    />
+  </div>
+
+</div>
       </div>
 
       <!-- INFORMAÇÕES -->
