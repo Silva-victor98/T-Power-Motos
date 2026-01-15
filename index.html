@@ -80,6 +80,23 @@
         <a href="#motos" class="text-white/80 hover:text-sky-400 transition-colors font-medium">Motos</a>
         <a href="#sobre" class="text-white/80 hover:text-sky-400 transition-colors font-medium">Sobre</a>
         <a href="#contato" class="text-white/80 hover:text-sky-400 transition-colors font-medium">Contato</a>
+       <!-- Barra de pesquisa -->
+<div class="mt-4 sm:mt-0">
+  <form action="/busca" method="GET" class="flex items-center max-w-md mx-auto md:mx-0">
+    <input
+      type="text"
+      name="query"
+      placeholder="Pesquisar motos..."
+      class="flex-grow px-4 py-2 rounded-l-md border border-gray-300 text-gray-800 focus:outline-none focus:ring-2 focus:ring-sky-400 focus:border-sky-400"
+    />
+    <button
+      type="submit"
+      class="px-4 py-2 bg-sky-500 text-white rounded-r-md hover:bg-sky-600 transition-colors"
+    >
+      Buscar
+    </button>
+  </form>
+</div>
       </nav>
       <button class="md:hidden text-white p-2" onclick="toggleMenu()">
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24">
@@ -670,6 +687,7 @@
   </script>
  <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9bd5720816ed5f28',t:'MTc2ODMxMzA5NC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
+
 
 
 
