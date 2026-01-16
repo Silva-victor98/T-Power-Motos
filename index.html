@@ -539,21 +539,6 @@
       </div>
      </div>
      </div>
-<button
-  id="btn-next"
-  onclick="showNextCards()"
-  class="fixed right-4 top-1/2 -translate-y-1/2 bg-red-600 text-white px-4 py-3 rounded-full shadow-lg hover:bg-red-700 transition"
->
-  →
-</button>
-
-<button
-  id="btn-prev"
-  onclick="showPrevCards()"
-  class="fixed left-4 top-1/2 -translate-y-1/2 bg-gray-800 text-white px-4 py-3 rounded-full shadow-lg hover:bg-gray-900 transition hidden"
->
-  ←
-</button>
 <section class="relative overflow-hidden h-screen">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
     
@@ -864,70 +849,5 @@
     });
   </script>
  <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9bd5720816ed5f28',t:'MTc2ODMxMzA5NC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
-      <script>
-  function showNextCards() {
-    document.getElementById("cards-page-1").classList.add("hidden");
-    document.getElementById("cards-page-2").classList.remove("hidden");
-
-    document.getElementById("btn-next").classList.add("hidden");
-    document.getElementById("btn-prev").classList.remove("hidden");
-  }
-
-  function showPrevCards() {
-    document.getElementById("cards-page-2").classList.add("hidden");
-    document.getElementById("cards-page-1").classList.remove("hidden");
-
-    document.getElementById("btn-prev").classList.add("hidden");
-    document.getElementById("btn-next").classList.remove("hidden");
-  }
-</script>
       </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
