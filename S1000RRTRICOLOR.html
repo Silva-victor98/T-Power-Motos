@@ -27,17 +27,39 @@
   <main class="pt-32 pb-20 px-4 sm:px-6 lg:px-8">
     <div class="max-w-6xl mx-auto grid lg:grid-cols-2 gap-12 items-center">
 
-      <!-- IMAGEM / ILUSTRAÇÃO -->
-      <div class="card-gradient backdrop-blur-sm rounded-2xl border border-white/10 p-10">
-        <!-- Você pode trocar esse SVG por IMG depois -->
-        <svg class="w-full h-64 mx-auto" viewBox="0 0 200 150" fill="none">
-          <circle cx="40" cy="110" r="25" stroke="#38BDF8" stroke-width="3" />
-          <circle cx="160" cy="110" r="25" stroke="#38BDF8" stroke-width="3" />
-          <path d="M40 110 L60 70 L120 60 L150 80 L160 110" stroke="#FFFFFF" stroke-width="3" />
-          <path d="M70 65 Q90 45 110 55 L115 65 L75 70 Z" fill="#38BDF8" />
-          <ellipse cx="165" cy="75" rx="8" ry="10" fill="#FFE066" />
-        </svg>
-      </div>
+     <!-- GALERIA DE IMAGENS -->
+<div class="card-gradient backdrop-blur-sm rounded-2xl border border-white/10 p-6">
+
+  <!-- IMAGEM PRINCIPAL -->
+  <div class="mb-4">
+    <img
+      id="mainImage"
+      src="images/cb500f/1.jpg"
+      alt="Honda CB 500F"
+      class="w-full h-80 object-contain rounded-xl transition-all duration-300"
+    />
+  </div>
+
+  <!-- MINIATURAS -->
+  <div class="flex gap-4 justify-center">
+    <img src="images/cb500f/1.jpg"
+         onclick="changeImage(this)"
+         class="w-20 h-20 object-cover rounded-lg cursor-pointer border border-sky-500" />
+
+    <img src="images/cb500f/2.jpg"
+         onclick="changeImage(this)"
+         class="w-20 h-20 object-cover rounded-lg cursor-pointer border border-white/10 hover:border-sky-500" />
+
+    <img src="images/cb500f/3.jpg"
+         onclick="changeImage(this)"
+         class="w-20 h-20 object-cover rounded-lg cursor-pointer border border-white/10 hover:border-sky-500" />
+
+    <img src="images/cb500f/4.jpg"
+         onclick="changeImage(this)"
+         class="w-20 h-20 object-cover rounded-lg cursor-pointer border border-white/10 hover:border-sky-500" />
+  </div>
+
+</div>
 
       <!-- INFORMAÇÕES -->
       <div>
