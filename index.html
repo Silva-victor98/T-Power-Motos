@@ -2087,7 +2087,26 @@
   iniciarApp();
 </script>
 </script>
+  <script>
+  async function carregarMotos() {
+    const { data, error } = await supabase
+      .from('motos')
+      .select('*')
+      .order('id', { ascending: true });
+
+    if (error) {
+      console.error('Erro ao buscar motos:', error);
+      return;
+    }
+
+    console.log('MOTOS DO BANCO:', data);
+  }
+
+  carregarMotos();
+</script>
+
  </body>
 </html>
+
 
 
