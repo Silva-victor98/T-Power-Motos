@@ -1906,14 +1906,17 @@
   </script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <script>
-  const supabase = supabase.createClient(
+  const banco = supabase.createClient(
     "SUA_SUPABASE_URL",
     "SUA_SUPABASE_ANON_KEY"
   );
-
+</script>
+<script>
   async function carregarMotos() {
-    const { data, error } = await supabase
+    const { data, error } = await banco
       .from("motos")
       .select("*");
 
@@ -1927,10 +1930,9 @@
 
   carregarMotos();
 </script>
-
-
  </body>
 </html>
+
 
 
 
