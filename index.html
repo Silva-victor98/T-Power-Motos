@@ -1937,19 +1937,29 @@
   iniciarApp();
 </script>
 </script>
-  <script>
+<script type="module">
+  import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
+
+  const supabase = createClient(
+    "SUA_SUPABASE_URL",
+    "SUA_SUPABASE_ANON_KEY"
+  );
+
   async function carregarMotos() {
-    const { data, error } = await supabase
-      .from('motos')
-      .select('*')
-      .order('id', { ascending: true });
+    const { data: motos, error } = await supabase
+      .from("motos")
+      .select("*")
+      .order("id", { ascending: true });
 
     if (error) {
-      console.error('Erro ao buscar motos:', error);
+      console.error("Erro ao buscar motos:", error);
       return;
     }
 
-    console.log('MOTOS DO BANCO:', data);
+    console.log("MOTOS DO BANCO:", motos);
+
+    // 👇 ESSA LINHA É A CHAVE
+    renderMotoCards(motos);
   }
 
   carregarMotos();
@@ -1957,6 +1967,7 @@
 
  </body>
 </html>
+
 
 
 
