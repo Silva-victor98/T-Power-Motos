@@ -1915,26 +1915,37 @@
   );
 </script>
 <script>
+  console.log("INÍCIO script Supabase");
+
   async function carregarMotos() {
-    const { data, error } = await banco
+    console.log("ENTROU na função carregarMotos");
+
+    const resposta = await banco
       .from("motos")
       .select("*");
 
-    if (error) {
-      console.error(error);
+    console.log("RESPOSTA COMPLETA DO SUPABASE:", resposta);
+
+    if (resposta.error) {
+      console.error("ERRO SUPABASE:", resposta.error);
       return;
     }
 
-    renderMotoCards(data);
+    console.log("DATA:", resposta.data);
+
+    renderMotoCards(resposta.data);
   }
 
   carregarMotos();
+</script>
+
 </script>
   <script>
   console.log("TESTE: script final executando");
 </script>
  </body>
 </html>
+
 
 
 
