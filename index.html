@@ -1937,14 +1937,15 @@
   iniciarApp();
 </script>
 </script>
-<script type="module">
-  import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-  const supabase = createClient(
-    "SUA_SUPABASE_URL",
-    "SUA_SUPABASE_ANON_KEY"
-  );
+<script>
+  const supabaseUrl = "SUA_SUPABASE_URL";
+  const supabaseKey = "SUA_SUPABASE_ANON_KEY";
 
+  const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+</script>
+<script>
   async function carregarMotos() {
     const { data: motos, error } = await supabase
       .from("motos")
@@ -1958,15 +1959,17 @@
 
     console.log("MOTOS DO BANCO:", motos);
 
-    // 👇 ESSA LINHA É A CHAVE
+    // ⚠️ ESSE NOME TEM QUE EXISTIR NO SEU CÓDIGO
     renderMotoCards(motos);
   }
 
   carregarMotos();
 </script>
 
+
  </body>
 </html>
+
 
 
 
