@@ -8,8 +8,6 @@
   <link rel="shortcut icon" type="image/png" href="https://i.imgur.com/FyCqY2d.png">
   <link rel="apple-touch-icon" href="https://i.imgur.com/FyCqY2d.png">
   <script src="https://cdn.tailwindcss.com"></script>
-  <script src="/_sdk/element_sdk.js"></script>
-  <script src="/_sdk/data_sdk.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
   <style>
     body {
@@ -565,153 +563,6 @@
         }
       }
     };
-
-    // Inicializar SDK
-    async function initDataSDK() {
-      if (dataInitialized) return;
-      
-      console.log('🔄 Inicializando sistema de salvamento...');
-      
-      try {
-        const result = await window.dataSdk.init(dataHandler);
-        if (result.isOk) {
-          dataInitialized = true;
-          console.log('✅ Sistema de armazenamento CONECTADO e FUNCIONANDO!');
-          console.log('💾 Todos os dados agora serão salvos permanentemente na Planilha do Canva');
-        } else {
-          console.error('❌ Erro ao conectar armazenamento:', result.error);
-          showToast('❌ Erro ao conectar sistema de salvamento', 'error');
-        }
-      } catch (error) {
-        console.error('❌ Erro ao inicializar:', error);
-        showToast('❌ Erro ao inicializar sistema', 'error');
-      }
-    }
-
-    // Salvar dados no SDK com RETRY automático
-    async function saveToSDK(motoId, dataType, dataContent, retryCount = 0) {
-      const MAX_RETRIES = 3;
-      
-      console.log(`🔵 TENTATIVA ${retryCount + 1}/${MAX_RETRIES + 1} - Salvando:`, { motoId, dataType });
-      
-      // Validações iniciais
-      if (!motoId || !dataType) {
-        const errorMsg = 'Erro: motoId ou dataType não fornecido';
-        console.error('❌', errorMsg);
-        showToast('❌ ' + errorMsg, 'error');
-        showSaveError();
-        return false;
-      }
-
-      // Garantir inicialização
-      if (!dataInitialized) {
-        console.log('⚠️ SDK não inicializado, inicializando agora...');
-        await initDataSDK();
-        
-        // Aguardar mais um pouco para garantir
-        await new Promise(resolve => setTimeout(resolve, 500));
-      }
-
-      // Verificar se SDK existe
-      if (!window.dataSdk) {
-        const errorMsg = 'Sistema de salvamento não disponível';
-        console.error('❌ CRÍTICO:', errorMsg);
-        showToast('❌ ' + errorMsg + '. Recarregue a página.', 'error');
-        showSaveError();
-        return false;
-      }
-
-      showSavingIndicator();
-
-      // Buscar registro existente
-      const existing = currentData.find(r => r.moto_id === motoId && r.data_type === dataType);
-      
-      // Converter dados para string se necessário
-      const dataString = typeof dataContent === 'string' ? dataContent : JSON.stringify(dataContent);
-      
-      console.log('📦 Preparando dados:', { 
-        motoId, 
-        dataType, 
-        tamanhoBytes: dataString.length, 
-        temExistente: !!existing,
-        totalRegistros: currentData.length
-      });
-      
-      try {
-        let result;
-        
-        if (existing) {
-          // Atualizar existente
-          console.log('📝 ATUALIZANDO registro existente');
-          console.log('📋 Dados antigos:', existing.data_json.substring(0, 100) + '...');
-          
-          existing.data_json = dataString;
-          existing.updated_at = new Date().toISOString();
-          
-          console.log('🔄 Chamando window.dataSdk.update...');
-          result = await window.dataSdk.update(existing);
-          
-        } else {
-          // Criar novo
-          console.log('➕ CRIANDO novo registro');
-          
-          const newRecord = {
-            moto_id: motoId,
-            data_type: dataType,
-            data_json: dataString,
-            updated_at: new Date().toISOString()
-          };
-          
-          console.log('📋 Novo registro:', {
-            moto_id: newRecord.moto_id,
-            data_type: newRecord.data_type,
-            tamanho: newRecord.data_json.length,
-            updated_at: newRecord.updated_at
-          });
-          
-          console.log('🔄 Chamando window.dataSdk.create...');
-          result = await window.dataSdk.create(newRecord);
-        }
-        
-        console.log('📤 Resultado:', { isOk: result.isOk, isError: result.isError });
-        
-        if (result.isOk) {
-          console.log('✅✅✅ SUCESSO TOTAL!');
-          showSavedIndicator();
-          return true;
-          
-        } else {
-          // Falhou - tentar retry
-          console.error('❌ Falhou:', result.error);
-          
-          if (retryCount < MAX_RETRIES) {
-            console.log(`🔄 Tentando novamente em 1 segundo... (${retryCount + 1}/${MAX_RETRIES})`);
-            await new Promise(resolve => setTimeout(resolve, 1000));
-            return saveToSDK(motoId, dataType, dataContent, retryCount + 1);
-          } else {
-            const errorMsg = `Falha após ${MAX_RETRIES + 1} tentativas: ${JSON.stringify(result.error)}`;
-            console.error('❌❌❌', errorMsg);
-            showToast('❌ Erro ao salvar. Tente novamente.', 'error');
-            showSaveError();
-            return false;
-          }
-        }
-        
-      } catch (error) {
-        console.error('❌❌❌ EXCEÇÃO:', error.message);
-        console.error('Stack:', error.stack);
-        
-        if (retryCount < MAX_RETRIES) {
-          console.log(`🔄 Retry após exceção... (${retryCount + 1}/${MAX_RETRIES})`);
-          await new Promise(resolve => setTimeout(resolve, 1000));
-          return saveToSDK(motoId, dataType, dataContent, retryCount + 1);
-        } else {
-          showToast('❌ Erro crítico ao salvar', 'error');
-          showSaveError();
-          return false;
-        }
-      }
-    }
 
     // Banco de dados completo das 30 motos
     const motosDatabase = {
@@ -2079,7 +1930,6 @@
   testeBanco();
    <script>
   async function iniciarApp() {
-    await initDataSDK();
     renderMotoCards();
     showPage(0);
   }
@@ -2107,6 +1957,7 @@
 
  </body>
 </html>
+
 
 
 
