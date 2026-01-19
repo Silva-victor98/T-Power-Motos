@@ -1904,69 +1904,25 @@
     }
 
   </script>
- <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9c058ec302bbf1dd',t:'MTc2ODgxNzU4OC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
- <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
-  const supabaseUrl = "https://SEU-PROJETO.supabase.co";
-  const supabaseKey = "SUA_ANON_KEY";
-
   const supabase = supabase.createClient(
-    supabaseUrl,
-    supabaseKey
+    "SUA_SUPABASE_URL",
+    "SUA_SUPABASE_ANON_KEY"
   );
-</script>
 
-  <script>
-  async function testeBanco() {
+  async function carregarMotos() {
     const { data, error } = await supabase
       .from("motos")
-      .select("*")
-      .limit(1);
+      .select("*");
 
     if (error) {
-      console.error("ERRO:", error);
-    } else {
-      console.log("BANCO OK:", data);
-    }
-  }
-
-  testeBanco();
-   <script>
-  async function iniciarApp() {
-    renderMotoCards();
-    showPage(0);
-  }
-
-  iniciarApp();
-</script>
-</script>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-<script>
-  const supabaseUrl = "SUA_SUPABASE_URL";
-  const supabaseKey = "SUA_SUPABASE_ANON_KEY";
-
-  const supabase = supabase.createClient(supabaseUrl, supabaseKey);
-</script>
-<script>
-  async function carregarMotos() {
-    const { data: motos, error } = await supabase
-      .from("motos")
-      .select("*")
-      .order("id", { ascending: true });
-
-    if (error) {
-      console.error("Erro ao buscar motos:", error);
+      console.error(error);
       return;
     }
 
-    console.log("MOTOS DO BANCO:", motos);
-
-    // ⚠️ ESSE NOME TEM QUE EXISTIR NO SEU CÓDIGO
-    renderMotoCards(motos);
+    renderMotoCards(data);
   }
 
   carregarMotos();
@@ -1975,6 +1931,7 @@
 
  </body>
 </html>
+
 
 
 
