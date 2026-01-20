@@ -13,7 +13,7 @@
     body {
       box-sizing: border-box;
     }
-    
+
     /* Melhorar nitidez MÁXIMA de todos os textos */
     html, body, * {
       -webkit-font-smoothing: antialiased !important;
@@ -24,24 +24,24 @@
       text-shadow: none !important;
       image-rendering: crisp-edges !important;
     }
-    
+
     /* Remover qualquer blur ou filter */
     *, *::before, *::after {
       backdrop-filter: none !important;
       filter: none !important;
     }
-    
+
     .font-display {
       font-family: 'Bebas Neue', sans-serif;
       font-weight: 400;
       letter-spacing: 0.03em;
     }
-    
+
     .font-body {
       font-family: 'Inter', sans-serif;
       font-weight: 600;
     }
-    
+
     .gradient-bg {
       background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
     }
@@ -161,23 +161,23 @@
       height: 200px;
       object-fit: cover;
     }
-    
+
     /* Transição suave para foto principal */
     #mainPhoto {
       transition: opacity 0.3s ease-in-out;
     }
-    
+
     /* Ajustes responsivos para mobile */
     @media (max-width: 768px) {
       .arrow-button-prev, .arrow-button-next {
         display: none;
       }
-      
+
       .thumbnail-preview {
         height: 180px;
       }
     }
-    
+
     /* Ajustes para desktop grande */
     @media (min-width: 1920px) {
       .max-w-7xl {
@@ -509,7 +509,7 @@
       const text = document.getElementById('savingText');
       text.textContent = '✅ Salvo com Sucesso!';
       indicator.style.background = 'linear-gradient(135deg, #10b981 0%, #059669 100%)';
-      
+
       setTimeout(() => {
         indicator.style.display = 'none';
         indicator.style.background = 'linear-gradient(135deg, #0ea5e9 0%, #3b82f6 100%)';
@@ -521,7 +521,7 @@
       const text = document.getElementById('savingText');
       text.textContent = '❌ Erro ao Salvar';
       indicator.style.background = 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)';
-      
+
       setTimeout(() => {
         indicator.style.display = 'none';
         indicator.style.background = 'linear-gradient(135deg, #0ea5e9 0%, #3b82f6 100%)';
@@ -537,7 +537,7 @@
       onDataChanged(data) {
         console.log('📊 Dados recebidos do servidor:', data.length, 'registros');
         currentData = data;
-        
+
         // CRÍTICO: Carregar dados SEM apagar os existentes
         data.forEach(record => {
           if (record.data_type === 'moto_data') {
@@ -548,11 +548,11 @@
             photosStorage[record.moto_id] = JSON.parse(record.data_json);
           }
         });
-        
+
         // Atualizar o site automaticamente quando houver mudanças
         // Mas APENAS se não estivermos no painel admin
         const isAdminPanelOpen = !document.getElementById('adminPanel').classList.contains('hidden');
-        
+
         if (!isAdminPanelOpen) {
           // Estamos na visualização normal do site - atualizar cards
           renderMotoCards();
@@ -620,10 +620,10 @@
 
     document.getElementById('adminLoginForm').addEventListener('submit', function(e) {
       e.preventDefault();
-      
+
       const username = document.getElementById('admin_username').value;
       const password = document.getElementById('admin_password').value;
-      
+
       if (username === ADMIN_USER && password === ADMIN_PASS) {
         closeAdminLogin();
         loadAdminPanel();
@@ -667,22 +667,22 @@
     function renderMotoCards() {
       const grid = document.getElementById('motos-grid');
       grid.innerHTML = '';
-      
+
       Object.entries(motosDatabase).forEach(([id, defaultMoto]) => {
         // SEMPRE pega dados do storage primeiro, se existir
         const moto = motoDataStorage[id] || getMotoData(id);
         const thumbnail = thumbnailStorage[id];
-        
+
         const card = document.createElement('div');
         card.className = 'moto-card visible group card-gradient backdrop-blur-sm rounded-2xl border border-white/10 transition-all duration-500 hover-glow cursor-pointer';
         card.setAttribute('data-moto-id', id);
         card.onclick = () => showMotoDetail(id);
-        
+
         let imageHTML = '';
         if (thumbnail) {
           imageHTML = `<img src="${thumbnail}" alt="${moto.brand} ${moto.name}" loading="lazy" class="thumbnail-preview" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">`;
         }
-        
+
         card.innerHTML = `
           <div class="relative p-4 sm:p-6 bg-gradient-to-br from-sky-500/10 to-transparent">
             ${moto.badge ? `<div class="absolute top-3 right-3 sm:top-4 sm:right-4 bg-${moto.badge === 'NOVO' ? 'sky' : 'red'}-500 text-white text-xs font-bold px-2 sm:px-3 py-1 rounded-full z-10">${moto.badge}</div>` : ''}
@@ -710,7 +710,7 @@
             </div>
           </div>
         `;
-        
+
         grid.appendChild(card);
       });
     }
@@ -734,14 +734,14 @@
 
     // Carregar painel administrativo
     function loadAdminPanel() {
-      const motosDatabase = await carregarMotos(); // pega todas do Supabase
-      
+      const adminPanel = document.getElementById('adminPanel');
+
       let adminCardsHTML = '';
       Object.entries(motosDatabase).forEach(([id, defaultMoto]) => {
         const moto = getMotoData(id);
         const photosCount = photosStorage[id] ? photosStorage[id].length : 0;
         const hasThumbnail = thumbnailStorage[id] ? '✓' : '✗';
-        
+
         adminCardsHTML += `
         <script src="supabaseAdmin.js"></script>
 <script src="seuPainel.js"></script>
@@ -751,7 +751,7 @@
                 <h3 class="font-display text-xl sm:text-2xl text-sky-400">${moto.name}</h3>
                 <span class="text-white/40 text-xs sm:text-sm">${moto.brand}</span>
               </div>
-              
+
               <div class="grid grid-cols-2 gap-3 mb-6">
                 <div class="bg-white/5 rounded-xl p-3 sm:p-4 text-center">
                   <div class="text-white/60 text-xs sm:text-sm mb-2">Galeria</div>
@@ -778,21 +778,8 @@
           </div>
         `;
       });
-      
-      adminPanel.innerHTML = adminCardsHTML;
-  document.querySelectorAll('.btn-editar').forEach(btn => {
-  btn.addEventListener('click', () => {
-    const id = btn.dataset.id;
-    // Pega os valores dos inputs e chama atualizarMoto(id, dadosAtualizados)
-  });
-});
 
-document.querySelectorAll('.btn-deletar').forEach(btn => {
-  btn.addEventListener('click', () => {
-    const id = btn.dataset.id;
-    excluirMoto(id).then(() => loadAdminPanel()); // Recarrega painel
-  });
-});`
+      adminPanel.innerHTML = `
         <div class="h-screen p-4 sm:p-8" style="overflow-y: scroll;">
           <div class="max-w-7xl mx-auto mb-6 sm:mb-8">
             <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
@@ -839,7 +826,7 @@ document.querySelectorAll('.btn-deletar').forEach(btn => {
           <!-- Será preenchido dinamicamente -->
         </div>
       `;
-      
+
       adminPanel.classList.remove('hidden');
     }
 
@@ -856,7 +843,7 @@ document.querySelectorAll('.btn-deletar').forEach(btn => {
     function openMotoEditor(motoId) {
       currentEditingMotoId = motoId;
       const moto = getMotoData(motoId);
-      
+
       const modal = document.getElementById('motoEditorModal');
       modal.innerHTML = `
         <div class="max-w-4xl mx-auto py-8">
@@ -940,9 +927,9 @@ document.querySelectorAll('.btn-deletar').forEach(btn => {
           </div>
         </div>
       `;
-      
+
       modal.classList.remove('hidden');
-      
+
       document.getElementById('motoEditForm').addEventListener('submit', function(e) {
         e.preventDefault();
         saveMotoData();
@@ -957,7 +944,7 @@ document.querySelectorAll('.btn-deletar').forEach(btn => {
 
     async function saveMotoData() {
       const features = document.getElementById('edit_features').value.split('\n').filter(f => f.trim() !== '');
-      
+
       const motoData = {
         name: document.getElementById('edit_name').value,
         brand: document.getElementById('edit_brand').value,
@@ -972,12 +959,12 @@ document.querySelectorAll('.btn-deletar').forEach(btn => {
         },
         features: features
       };
-      
+
       motoDataStorage[currentEditingMotoId] = motoData;
-      
+
       // Salvar no banco de dados
       await saveToSDK(currentEditingMotoId, 'moto_data', motoData);
-      
+
       showToast('✅ Informações salvas com sucesso!', 'success');
       closeMotoEditor();
       // NÃO recarregar painel - evita sumir o layout
@@ -989,7 +976,7 @@ document.querySelectorAll('.btn-deletar').forEach(btn => {
     function openPhotoManager(motoId) {
       currentMotoId = motoId;
       const moto = getMotoData(motoId);
-      
+
       const modal = document.getElementById('photoManagerModal');
       modal.innerHTML = `
         <div class="max-w-5xl mx-auto py-8">
@@ -1006,7 +993,7 @@ document.querySelectorAll('.btn-deletar').forEach(btn => {
 
             <div class="mb-6 sm:mb-8 bg-white/5 rounded-2xl p-4 sm:p-6">
               <h3 class="font-semibold text-base sm:text-lg mb-4 text-sky-400">Adicionar Nova Foto</h3>
-              
+
               <div class="mb-4 sm:mb-6">
                 <label class="block text-white/80 text-sm font-medium mb-3">📁 Upload do Computador (Múltiplas Fotos)</label>
                 <div class="flex flex-col sm:flex-row gap-3 sm:gap-4">
@@ -1068,7 +1055,7 @@ document.querySelectorAll('.btn-deletar').forEach(btn => {
           </div>
         </div>
       `;
-      
+
       modal.classList.remove('hidden');
       renderPhotosList();
     }
@@ -1083,7 +1070,7 @@ document.querySelectorAll('.btn-deletar').forEach(btn => {
     async function addPhotoFromFile() {
       const fileInput = document.getElementById('photoFileInput');
       const files = fileInput.files;
-      
+
       if (!files || files.length === 0) {
         showToast('Por favor, selecione pelo menos um arquivo', 'error');
         return;
@@ -1109,7 +1096,7 @@ document.querySelectorAll('.btn-deletar').forEach(btn => {
         const reader = new FileReader();
         reader.onload = async function(e) {
           const dataUrl = e.target.result;
-          
+
           photosStorage[currentMotoId].push({
             id: Date.now() + Math.random(),
             url: dataUrl,
@@ -1117,21 +1104,21 @@ document.querySelectorAll('.btn-deletar').forEach(btn => {
           });
 
           processedCount++;
-          
+
           // Quando todas as fotos forem processadas
           if (processedCount === totalFiles) {
             fileInput.value = '';
-            
+
             // Salvar no banco de dados
             await saveToSDK(currentMotoId, 'photos', photosStorage[currentMotoId]);
-            
+
             // Atualizar APENAS a lista de fotos, não o layout inteiro
             renderPhotosList();
             updateAdminPanelCounters();
             showToast(`✅ ${totalFiles} foto${totalFiles > 1 ? 's adicionadas' : ' adicionada'} com sucesso!`, 'success');
           }
         };
-        
+
         reader.readAsDataURL(file);
       });
     }
@@ -1139,7 +1126,7 @@ document.querySelectorAll('.btn-deletar').forEach(btn => {
     async function addPhotoFromUrl() {
       const urlInput = document.getElementById('photoUrlInput');
       const url = urlInput.value.trim();
-      
+
       if (!url) {
         showToast('Por favor, insira uma URL válida', 'error');
         return;
@@ -1161,10 +1148,10 @@ document.querySelectorAll('.btn-deletar').forEach(btn => {
       });
 
       urlInput.value = '';
-      
+
       // Salvar no banco de dados
       await saveToSDK(currentMotoId, 'photos', photosStorage[currentMotoId]);
-      
+
       renderPhotosList();
       updateAdminPanelCounters();
       showToast('Foto adicionada com sucesso!', 'success');
@@ -1172,12 +1159,12 @@ document.querySelectorAll('.btn-deletar').forEach(btn => {
 
     async function removePhoto(photoId) {
       if (!photosStorage[currentMotoId]) return;
-      
+
       photosStorage[currentMotoId] = photosStorage[currentMotoId].filter(p => p.id !== photoId);
-      
+
       // Salvar no banco de dados
       await saveToSDK(currentMotoId, 'photos', photosStorage[currentMotoId]);
-      
+
       renderPhotosList();
       updateAdminPanelCounters();
       showToast('Foto removida com sucesso!', 'success');
@@ -1189,7 +1176,7 @@ document.querySelectorAll('.btn-deletar').forEach(btn => {
 
     function setupDragAndDrop() {
       const photoItems = document.querySelectorAll('.photo-item');
-      
+
       photoItems.forEach(item => {
         item.addEventListener('dragstart', handleDragStart);
         item.addEventListener('dragover', handleDragOver);
@@ -1203,7 +1190,7 @@ document.querySelectorAll('.btn-deletar').forEach(btn => {
     function handleDragStart(e) {
       draggedElement = this;
       draggedIndex = parseInt(this.dataset.photoIndex);
-      
+
       this.style.opacity = '0.4';
       e.dataTransfer.effectAllowed = 'move';
     }
@@ -1230,37 +1217,37 @@ document.querySelectorAll('.btn-deletar').forEach(btn => {
       if (e.stopPropagation) {
         e.stopPropagation();
       }
-      
+
       this.classList.remove('border-sky-400', 'bg-sky-500/10');
-      
+
       if (draggedElement !== this) {
         const dropIndex = parseInt(this.dataset.photoIndex);
-        
+
         // Reordenar array de fotos
         const photos = photosStorage[currentMotoId];
         const draggedPhoto = photos[draggedIndex];
-        
+
         // Remove da posição antiga
         photos.splice(draggedIndex, 1);
-        
+
         // Insere na nova posição
         photos.splice(dropIndex, 0, draggedPhoto);
-        
+
         // Salvar nova ordem no banco de dados
         await saveToSDK(currentMotoId, 'photos', photos);
-        
+
         // Renderizar novamente
         renderPhotosList();
         updateAdminPanelCounters();
         showToast('✅ Ordem das fotos atualizada!', 'success');
       }
-      
+
       return false;
     }
 
     function handleDragEnd(e) {
       this.style.opacity = '1';
-      
+
       // Remove estilos de drag de todos os items
       document.querySelectorAll('.photo-item').forEach(item => {
         item.classList.remove('border-sky-400', 'bg-sky-500/10');
@@ -1270,7 +1257,7 @@ document.querySelectorAll('.btn-deletar').forEach(btn => {
     function renderPhotosList() {
       const photosList = document.getElementById('photosList');
       const photos = photosStorage[currentMotoId] || [];
-      
+
       if (photos.length === 0) {
         photosList.innerHTML = `
           <div class="text-center py-12 text-white/40 col-span-full text-sm">
@@ -1307,7 +1294,7 @@ document.querySelectorAll('.btn-deletar').forEach(btn => {
           </div>
         </div>
       `).join('');
-      
+
       // Adicionar event listeners para drag and drop
       setupDragAndDrop();
     }
@@ -1319,7 +1306,7 @@ document.querySelectorAll('.btn-deletar').forEach(btn => {
       currentThumbnailMotoId = motoId;
       const moto = getMotoData(motoId);
       const currentThumbnail = thumbnailStorage[motoId];
-      
+
       const modal = document.getElementById('thumbnailManagerModal');
       modal.innerHTML = `
         <div class="max-w-3xl mx-auto py-8">
@@ -1346,7 +1333,7 @@ document.querySelectorAll('.btn-deletar').forEach(btn => {
 
             <div class="bg-white/5 rounded-2xl p-4 sm:p-6">
               <h3 class="font-semibold text-base sm:text-lg mb-4 text-green-400">Adicionar/Alterar Miniatura</h3>
-              
+
               <div class="mb-4 sm:mb-6">
                 <label class="block text-white/80 text-sm font-medium mb-3">📁 Upload do Computador</label>
                 <div class="flex flex-col sm:flex-row gap-3 sm:gap-4">
@@ -1395,7 +1382,7 @@ document.querySelectorAll('.btn-deletar').forEach(btn => {
           </div>
         </div>
       `;
-      
+
       modal.classList.remove('hidden');
     }
 
@@ -1410,7 +1397,7 @@ document.querySelectorAll('.btn-deletar').forEach(btn => {
     async function addThumbnailFromFile() {
       const fileInput = document.getElementById('thumbnailFileInput');
       const file = fileInput.files[0];
-      
+
       if (!file) {
         showToast('Por favor, selecione um arquivo', 'error');
         return;
@@ -1425,22 +1412,22 @@ document.querySelectorAll('.btn-deletar').forEach(btn => {
       reader.onload = async function(e) {
         thumbnailStorage[currentThumbnailMotoId] = e.target.result;
         fileInput.value = '';
-        
+
         // Salvar no banco de dados
         await saveToSDK(currentThumbnailMotoId, 'thumbnail', e.target.result);
-        
+
         updateAdminPanelCounters();
         showToast('✅ Miniatura definida com sucesso!', 'success');
         closeThumbnailManager();
       };
-      
+
       reader.readAsDataURL(file);
     }
 
     async function addThumbnailFromUrl() {
       const urlInput = document.getElementById('thumbnailUrlInput');
       const url = urlInput.value.trim();
-      
+
       if (!url) {
         showToast('Por favor, insira uma URL válida', 'error');
         return;
@@ -1453,10 +1440,10 @@ document.querySelectorAll('.btn-deletar').forEach(btn => {
 
       thumbnailStorage[currentThumbnailMotoId] = url;
       urlInput.value = '';
-      
+
       // Salvar no banco de dados
       await saveToSDK(currentThumbnailMotoId, 'thumbnail', url);
-      
+
       updateAdminPanelCounters();
       showToast('✅ Miniatura definida com sucesso!', 'success');
       closeThumbnailManager();
@@ -1464,13 +1451,13 @@ document.querySelectorAll('.btn-deletar').forEach(btn => {
 
     async function removeThumbnail() {
       delete thumbnailStorage[currentThumbnailMotoId];
-      
+
       // Remover do banco de dados
       const existing = currentData.find(r => r.moto_id === currentThumbnailMotoId && r.data_type === 'thumbnail');
       if (existing) {
         await window.dataSdk.delete(existing);
       }
-      
+
       updateAdminPanelCounters();
       showToast('Miniatura removida com sucesso!', 'success');
       closeThumbnailManager();
@@ -1483,7 +1470,7 @@ document.querySelectorAll('.btn-deletar').forEach(btn => {
       }`;
       toast.textContent = message;
       document.body.appendChild(toast);
-      
+
       setTimeout(() => {
         toast.style.opacity = '0';
         toast.style.transform = 'translateY(20px)';
@@ -1496,13 +1483,13 @@ document.querySelectorAll('.btn-deletar').forEach(btn => {
       Object.entries(motosDatabase).forEach(([id]) => {
         const photosCount = photosStorage[id] ? photosStorage[id].length : 0;
         const hasThumbnail = thumbnailStorage[id] ? '✓' : '✗';
-        
+
         // Atualizar contador de galeria
         const galleryCounter = document.querySelector(`[data-moto-id="${id}"] .gallery-counter`);
         if (galleryCounter) {
           galleryCounter.textContent = photosCount;
         }
-        
+
         // Atualizar indicador de miniatura
         const thumbnailIndicator = document.querySelector(`[data-moto-id="${id}"] .thumbnail-indicator`);
         if (thumbnailIndicator) {
@@ -1518,25 +1505,25 @@ document.querySelectorAll('.btn-deletar').forEach(btn => {
       if (!moto) return;
 
       const photos = photosStorage[motoId] || [];
-      
+
       // Inicializar sistema de fotos
       currentMotoPhotos = photos;
       currentPhotoIndex = 0;
-      
+
       let photosHTML = '';
-      
+
       if (photos.length > 0) {
         photosHTML = `
           <div class="mb-12 sm:mb-16">
             <h2 class="font-display text-3xl sm:text-4xl text-center mb-6 sm:mb-8 text-sky-400">GALERIA DE FOTOS</h2>
-            
+
             <!-- Foto Principal Grande -->
             <div class="card-gradient backdrop-blur-sm rounded-3xl border border-white/10 p-4 sm:p-6 mb-6 sm:mb-8">
               <div class="relative flex items-center justify-center" style="min-height: 400px;">
                 <img id="mainPhoto" src="${photos[0].url}" alt="Foto da ${moto.brand} ${moto.name}" 
                      class="max-w-full max-h-[400px] sm:max-h-[500px] lg:max-h-[700px] object-contain rounded-2xl mx-auto" 
                      onerror="this.src=''; this.alt='Erro ao carregar imagem';">
-                
+
                 ${photos.length > 1 ? `
                   <!-- Setas de Navegação -->
                   <button onclick="navigatePhoto(-1)" class="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 bg-black/60 hover:bg-black/80 backdrop-blur-sm text-white p-2 sm:p-4 rounded-full transition-all hover:scale-110 z-10">
@@ -1550,7 +1537,7 @@ document.querySelectorAll('.btn-deletar').forEach(btn => {
                     </svg>
                   </button>
                 ` : ''}
-                
+
                 <!-- Contador de Fotos -->
                 <div class="absolute bottom-3 sm:bottom-4 right-3 sm:right-4 bg-black/60 backdrop-blur-sm text-white px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-semibold">
                   <span id="photoCounter">1</span> / ${photos.length}
@@ -1576,7 +1563,7 @@ document.querySelectorAll('.btn-deletar').forEach(btn => {
 
       const detailHTML = `
         <div id="moto-detail-page" class="fixed inset-0 bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 z-50 detail-page-enter" style="overflow-y: scroll;">
-          
+
           <button onclick="closeMotoDetail()" class="fixed top-4 left-4 sm:top-6 sm:left-6 z-50 bg-white/10 hover:bg-white/20 backdrop-blur-md text-white px-4 sm:px-6 py-2.5 sm:py-3 rounded-full flex items-center gap-2 transition-all border border-white/20 hover:scale-105 text-sm sm:text-base">
             <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
@@ -1585,7 +1572,7 @@ document.querySelectorAll('.btn-deletar').forEach(btn => {
           </button>
 
           <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-24">
-            
+
             <div class="text-center mb-12 sm:mb-16 animate-fade-in-up">
               ${moto.badge ? `<span class="inline-block bg-gradient-to-r from-sky-500 to-blue-600 text-white text-xs sm:text-sm font-bold px-4 sm:px-6 py-2 rounded-full mb-4 sm:mb-6 shadow-lg">${moto.badge}</span>` : ''}
               <div class="text-sky-400 text-base sm:text-lg lg:text-xl font-semibold mb-2 sm:mb-3 tracking-wide">${moto.brand}</div>
@@ -1655,13 +1642,13 @@ document.querySelectorAll('.btn-deletar').forEach(btn => {
               <p class="text-white/60 text-base sm:text-lg lg:text-xl mb-8 sm:mb-10 max-w-2xl mx-auto px-4">
                 Entre em contato com nossa equipe agora mesmo!
               </p>
-              
+
               <div class="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center">
                 <a href="#contato" onclick="closeMotoDetail()" 
                    class="inline-flex items-center justify-center gap-2 sm:gap-3 bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-600 hover:to-blue-700 text-white font-bold px-8 sm:px-10 py-4 sm:py-5 rounded-full transition-all glow-effect hover:scale-105 text-base sm:text-lg shadow-xl">
                   Falar com Consultor
                 </a>
-                
+
                 <a href="https://wa.me/5541996977148?text=Olá!%20Tenho%20interesse%20na%20${encodeURIComponent(moto.brand + ' ' + moto.name)}"
                    target="_blank" 
                    rel="noopener noreferrer" 
@@ -1700,35 +1687,35 @@ document.querySelectorAll('.btn-deletar').forEach(btn => {
 
     function navigatePhoto(direction) {
       currentPhotoIndex += direction;
-      
+
       // Loop circular
       if (currentPhotoIndex < 0) {
         currentPhotoIndex = currentMotoPhotos.length - 1;
       } else if (currentPhotoIndex >= currentMotoPhotos.length) {
         currentPhotoIndex = 0;
       }
-      
+
       updateMainPhoto();
     }
 
     function updateMainPhoto() {
       const mainPhoto = document.getElementById('mainPhoto');
       const photoCounter = document.getElementById('photoCounter');
-      
+
       if (mainPhoto && currentMotoPhotos[currentPhotoIndex]) {
         // Animação suave de fade
         mainPhoto.style.opacity = '0';
-        
+
         setTimeout(() => {
           mainPhoto.src = currentMotoPhotos[currentPhotoIndex].url;
           mainPhoto.style.opacity = '1';
         }, 200);
-        
+
         // Atualizar contador
         if (photoCounter) {
           photoCounter.textContent = currentPhotoIndex + 1;
         }
-        
+
         // Atualizar borda das miniaturas
         document.querySelectorAll('.photo-thumbnail').forEach((thumb, index) => {
           if (index === currentPhotoIndex) {
@@ -1739,7 +1726,7 @@ document.querySelectorAll('.btn-deletar').forEach(btn => {
             thumb.classList.add('border-white/20', 'hover:border-sky-400/50');
           }
         });
-        
+
         // Scroll suave apenas horizontal das miniaturas, sem afetar a página
         const activeThumbnail = document.querySelector(`.photo-thumbnail[data-photo-index="${currentPhotoIndex}"]`);
         if (activeThumbnail && activeThumbnail.parentElement) {
@@ -1748,7 +1735,7 @@ document.querySelectorAll('.btn-deletar').forEach(btn => {
           const thumbWidth = activeThumbnail.offsetWidth;
           const containerWidth = container.offsetWidth;
           const scrollLeft = thumbLeft - (containerWidth / 2) + (thumbWidth / 2);
-          
+
           container.scrollTo({ left: scrollLeft, behavior: 'smooth' });
         }
       }
@@ -1762,7 +1749,7 @@ document.querySelectorAll('.btn-deletar').forEach(btn => {
     function searchMotos(searchTerm) {
       const term = searchTerm.toLowerCase().trim();
       const allMotoCards = document.querySelectorAll('.moto-card');
-      
+
       if (term === '') {
         isSearching = false;
         currentPage = 0;
@@ -1784,7 +1771,7 @@ document.querySelectorAll('.btn-deletar').forEach(btn => {
         const motoName = card.querySelector('h3').textContent.toLowerCase();
         const motoBrand = card.querySelector('.text-sky-400').textContent.toLowerCase();
         const motoDescription = card.querySelector('.text-white\\/70').textContent.toLowerCase();
-        
+
         if (motoName.includes(term) || motoBrand.includes(term) || motoDescription.includes(term)) {
           card.style.display = 'block';
           setTimeout(() => {
@@ -1816,17 +1803,17 @@ document.querySelectorAll('.btn-deletar').forEach(btn => {
 
     function showPage(pageNumber) {
       if (isSearching) return;
-      
+
       const allMotoCards = document.querySelectorAll('.moto-card');
       const totalPages = Math.ceil(allMotoCards.length / motosPerPage);
       const startIndex = pageNumber * motosPerPage;
       const endIndex = Math.min(startIndex + motosPerPage, allMotoCards.length);
-      
+
       // Remove visibilidade de todos primeiro
       allMotoCards.forEach((card) => {
         card.classList.remove('visible');
       });
-      
+
       // Aguarda animação, depois esconde/mostra cards
       setTimeout(() => {
         allMotoCards.forEach((card, index) => {
@@ -1836,7 +1823,7 @@ document.querySelectorAll('.btn-deletar').forEach(btn => {
             card.classList.add('hidden-card');
           }
         });
-        
+
         // Mostra cards da página atual com animação
         setTimeout(() => {
           allMotoCards.forEach((card, index) => {
@@ -1846,7 +1833,7 @@ document.querySelectorAll('.btn-deletar').forEach(btn => {
           });
         }, 50);
       }, 450);
-      
+
       updateButtonVisibility(totalPages);
     }
 
@@ -1864,7 +1851,7 @@ document.querySelectorAll('.btn-deletar').forEach(btn => {
         document.getElementById('loadMoreBtn').style.opacity = '1';
         document.getElementById('loadMoreBtn').style.pointerEvents = 'auto';
       }
-      
+
       if (currentPage <= 0) {
         document.getElementById('loadPrevBtn').style.opacity = '0';
         document.getElementById('loadPrevBtn').style.pointerEvents = 'none';
@@ -1876,7 +1863,7 @@ document.querySelectorAll('.btn-deletar').forEach(btn => {
       // Mobile buttons
       const prevBtnMobile = document.getElementById('prevBtnMobile');
       const nextBtnMobile = document.getElementById('nextBtnMobile');
-      
+
       if (prevBtnMobile) {
         if (currentPage <= 0) {
           prevBtnMobile.style.opacity = '0.3';
@@ -1886,7 +1873,7 @@ document.querySelectorAll('.btn-deletar').forEach(btn => {
           prevBtnMobile.disabled = false;
         }
       }
-      
+
       if (nextBtnMobile) {
         if (currentPage >= totalPages - 1) {
           nextBtnMobile.style.opacity = '0.3';
@@ -1905,7 +1892,7 @@ document.querySelectorAll('.btn-deletar').forEach(btn => {
       const formSuccess = document.getElementById('form-success');
       form.style.display = 'none';
       formSuccess.classList.remove('hidden');
-      
+
       setTimeout(() => {
         formSuccess.classList.add('hidden');
         form.style.display = 'block';
@@ -1960,18 +1947,3 @@ document.querySelectorAll('.btn-deletar').forEach(btn => {
 </script>
  </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
