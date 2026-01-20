@@ -734,7 +734,7 @@
 
     // Carregar painel administrativo
     function loadAdminPanel() {
-      const adminPanel = document.getElementById('adminPanel');
+      const motosDatabase = await carregarMotos(); // pega todas do Supabase
       
       let adminCardsHTML = '';
       Object.entries(motosDatabase).forEach(([id, defaultMoto]) => {
@@ -779,7 +779,20 @@
         `;
       });
       
-      adminPanel.innerHTML = `
+      adminPanel.innerHTML = adminCardsHTML;
+  document.querySelectorAll('.btn-editar').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const id = btn.dataset.id;
+    // Pega os valores dos inputs e chama atualizarMoto(id, dadosAtualizados)
+  });
+});
+
+document.querySelectorAll('.btn-deletar').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const id = btn.dataset.id;
+    excluirMoto(id).then(() => loadAdminPanel()); // Recarrega painel
+  });
+});`
         <div class="h-screen p-4 sm:p-8" style="overflow-y: scroll;">
           <div class="max-w-7xl mx-auto mb-6 sm:mb-8">
             <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
@@ -1947,6 +1960,7 @@
 </script>
  </body>
 </html>
+
 
 
 
