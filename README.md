@@ -1,11 +1,14 @@
-type: web name: t-power-motos env: node repo: https://github.com/Silva-victor98/T-Power-Motos branch: main plan: free buildCommand: npm install && npm run build startCommand: npm run start:prod envVars:
-key: JWT_SECRET required: true
-key: UPLOAD_MAX_FILE_SIZE value: "26214400"
-key: ADMIN_EMAIL
-key: ADMIN_PASS
-databases:
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://dashboard.render.com/deploy?repo=https://github.com/Silva-victor98/T-Power-Motos)
 
-name: tpower-postgres engine: postgres plan: starter version: "15"
+Deploy one‑click no Render:
+1. Clique no botão acima (faça login/crie conta no Render).
+2. Confirme o repositório e os serviços.
+3. Defina as variáveis de ambiente quando pedido:
+   - JWT_SECRET (obrigatório)
+   - UPLOAD_MAX_FILE_SIZE (opcional; padrão 26214400)
+   - ADMIN_EMAIL e ADMIN_PASS (opcionais — para seed do admin)
+4. Escolha criar o Managed Postgres (recomendado).
+5. Clique em Deploy — aguarde até o Render mostrar a URL pública.
 # T-Power-Motos - Backend (scaffold)
 
 Stack: NestJS + TypeScript + Prisma + PostgreSQL
