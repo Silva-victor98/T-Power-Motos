@@ -1,0 +1,26 @@
+version: '3.8'
+services:
+  postgres:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: tpower
+      POSTGRES_PASSWORD: tpower
+      POSTGRES_DB: tpower_dev
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+  api:
+    build: .
+    command: npm run start:dev
+    volumes:
+      - ./:/app
+      - /app/node_modules
+    ports:
+      - "3000:3000"
+    environment:
+      DATABASE_URL: "postgresql://tpower:tpower@postgres:5432/tpower_dev?schema=public"
+    depends_on:
+      - postgres
+volumes:
+  db-data:
