@@ -1,3 +1,11 @@
+type: web name: t-power-motos env: node repo: https://github.com/Silva-victor98/T-Power-Motos branch: main plan: free buildCommand: npm install && npm run build startCommand: npm run start:prod envVars:
+key: JWT_SECRET required: true
+key: UPLOAD_MAX_FILE_SIZE value: "26214400"
+key: ADMIN_EMAIL
+key: ADMIN_PASS
+databases:
+
+name: tpower-postgres engine: postgres plan: starter version: "15"
 # T-Power-Motos - Backend (scaffold)
 
 Stack: NestJS + TypeScript + Prisma + PostgreSQL
