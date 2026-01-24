@@ -1,19 +1,22 @@
 services:
-  web:
-    type: web
-    env: python
-    plan: starter
-    buildCommand: "pip install -r requirements.txt"
-    startCommand: "gunicorn app:app"
+  - type: web
+    name: t-power-motos
+    env: node
+    repo: https://github.com/Silva-victor98/T-Power-Motos
+    branch: main
+    plan: free
+    buildCommand: npm install && npm run build
+    startCommand: npm run start:prod
     envVars:
-      JWT_SECRET: ${JWT_SECRET}
-      UPLOAD_MAX_FILE_SIZE: ${UPLOAD_MAX_FILE_SIZE}
-      ADMIN_EMAIL: ${ADMIN_EMAIL}
-      ADMIN_PASS: ${ADMIN_PASS}
+      - key: JWT_SECRET
+        required: true
+      - key: UPLOAD_MAX_FILE_SIZE
+        value: "26214400"
+      - key: ADMIN_EMAIL
+      - key: ADMIN_PASS
 
-  postgres:
-    type: postgres
+databases:
+  - name: tpower-postgres
+    engine: postgres
     plan: starter
-    envVars:
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    version: "15"
