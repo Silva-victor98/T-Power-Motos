@@ -1,0 +1,2062 @@
+<!doctype html>
+<html lang="pt-BR" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>T-POWER MOTOS</title>
+  <link rel="icon" type="image/png" href="https://i.imgur.com/FyCqY2d.png">
+  <link rel="shortcut icon" type="image/png" href="https://i.imgur.com/FyCqY2d.png">
+  <link rel="apple-touch-icon" href="https://i.imgur.com/FyCqY2d.png">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="/_sdk/data_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+  <style>
+    body {
+      box-sizing: border-box;
+    }
+    
+    /* Melhorar nitidez MÁXIMA de todos os textos */
+    html, body, * {
+      -webkit-font-smoothing: antialiased !important;
+      -moz-osx-font-smoothing: grayscale !important;
+      text-rendering: optimizeLegibility !important;
+      font-smooth: always !important;
+      -webkit-text-stroke: 0 !important;
+      text-shadow: none !important;
+      image-rendering: crisp-edges !important;
+    }
+    
+    /* Remover qualquer blur ou filter */
+    *, *::before, *::after {
+      backdrop-filter: none !important;
+      filter: none !important;
+    }
+    
+    .font-display {
+      font-family: 'Bebas Neue', sans-serif;
+      font-weight: 400;
+      letter-spacing: 0.03em;
+    }
+    
+    .font-body {
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+    }
+    
+    .gradient-bg {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    }
+    .card-gradient {
+      background: rgba(30, 41, 59, 0.98);
+    }
+    .glow-effect {
+      box-shadow: 0 0 40px rgba(56, 189, 248, 0.35);
+    }
+    .hover-glow:hover {
+      box-shadow: 0 0 50px rgba(56, 189, 248, 0.55);
+      transform: translateY(-5px);
+    }
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    @keyframes pulse-slow {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.02); }
+    }
+    .animate-fade-in-up {
+      animation: fadeInUp 0.8s ease-out forwards;
+    }
+    .animate-delay-1 { animation-delay: 0.2s; opacity: 0; }
+    .animate-delay-2 { animation-delay: 0.4s; opacity: 0; }
+    .animate-delay-3 { animation-delay: 0.6s; opacity: 0; }
+    .animate-delay-4 { animation-delay: 0.8s; opacity: 0; }
+    .pulse-slow:hover {
+      animation: pulse-slow 2s ease-in-out infinite;
+    }
+    .arrow-button-prev {
+      position: absolute;
+      left: -60px;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 40;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+    .arrow-button-prev:hover {
+      transform: translateY(-50%) scale(1.1);
+    }
+    .arrow-button-prev:active {
+      transform: translateY(-50%) scale(0.9);
+    }
+    .arrow-button-next {
+      position: absolute;
+      right: -60px;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 40;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+    .arrow-button-next:hover {
+      transform: translateY(-50%) scale(1.1);
+    }
+    .arrow-button-next:active {
+      transform: translateY(-50%) scale(0.9);
+    }
+    .moto-card {
+      opacity: 0;
+      transform: scale(0.95);
+      transition: opacity 0.4s ease, transform 0.4s ease;
+    }
+    .moto-card.visible {
+      opacity: 1;
+      transform: scale(1);
+    }
+    .moto-card.hidden-card {
+      display: none !important;
+    }
+    @keyframes arrowPulse {
+      0%, 100% { 
+        box-shadow: 0 0 20px rgba(56, 189, 248, 0.4);
+      }
+      50% { 
+        box-shadow: 0 0 40px rgba(56, 189, 248, 0.7);
+      }
+    }
+    .arrow-button-prev, .arrow-button-next {
+      animation: arrowPulse 2s ease-in-out infinite;
+    }
+    #motos-grid {
+      position: relative;
+    }
+    @keyframes slideInFromRight {
+      from {
+        opacity: 0;
+        transform: translateX(100%);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+    .detail-page-enter {
+      animation: slideInFromRight 0.5s ease-out forwards;
+    }
+    .shake {
+      animation: shake 0.5s;
+    }
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-10px); }
+      75% { transform: translateX(10px); }
+    }
+    .thumbnail-preview {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+    
+    /* Transição suave para foto principal */
+    #mainPhoto {
+      transition: opacity 0.3s ease-in-out;
+    }
+    
+    /* Ajustes responsivos para mobile */
+    @media (max-width: 768px) {
+      .arrow-button-prev, .arrow-button-next {
+        display: none;
+      }
+      
+      .thumbnail-preview {
+        height: 180px;
+      }
+    }
+    
+    /* Ajustes para desktop grande */
+    @media (min-width: 1920px) {
+      .max-w-7xl {
+        max-width: 1400px;
+      }
+    }
+
+    /* Indicador de salvamento */
+    .saving-indicator {
+      position: fixed;
+      top: 100px;
+      right: 20px;
+      z-index: 200;
+      background: linear-gradient(135deg, #0ea5e9 0%, #3b82f6 100%);
+      color: white;
+      padding: 16px 24px;
+      border-radius: 12px;
+      font-weight: 600;
+      box-shadow: 0 10px 40px rgba(14, 165, 233, 0.4);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      animation: slideInRight 0.3s ease-out;
+    }
+
+    @keyframes slideInRight {
+      from {
+        transform: translateX(400px);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .spinner {
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba(255,255,255,0.3);
+      border-top-color: white;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+  </style>
+  <style>@view-transition { navigation: auto; }</style>
+ </head>
+ <body class="font-body gradient-bg text-white h-full"><!-- Indicador de Salvamento -->
+  <div id="savingIndicator" class="saving-indicator" style="display: none;">
+   <div class="spinner"></div><span id="savingText">Salvando...</span>
+  </div><!-- Header -->
+  <header class="fixed top-0 left-0 right-0 z-50 bg-black/95 border-b border-white/10">
+   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-20 sm:h-24 lg:h-28"><a href="." class="flex items-center hover:opacity-80 transition-all duration-300 hover:scale-105"> <img src="https://i.imgur.com/FyCqY2d.png" alt="T-Power Motos" class="h-16 sm:h-20 lg:h-24 w-auto" loading="eager" onerror="this.style.display='none';"> </a>
+     <nav class="hidden md:flex items-center gap-4 lg:gap-8"><a href="#motos" class="text-white/80 hover:text-sky-400 transition-colors font-medium text-sm lg:text-base">Motos</a> <a href="#sobre" class="text-white/80 hover:text-sky-400 transition-colors font-medium text-sm lg:text-base">Sobre</a> <a href="#contato" class="text-white/80 hover:text-sky-400 transition-colors font-medium text-sm lg:text-base">Contato</a>
+      <div class="relative"><input type="text" id="searchInput" placeholder="Buscar moto..." class="bg-white/10 backdrop-blur-sm border border-white/20 rounded-full px-4 py-2 pl-10 text-white placeholder-white/50 focus:outline-none focus:border-sky-400 focus:bg-white/15 transition-all w-40 lg:w-48 xl:focus:w-64 text-sm">
+       <svg class="w-4 h-4 lg:w-5 lg:h-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-white/50" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+       </svg>
+      </div><!-- Botão Admin Discreto --> <button onclick="showAdminLogin()" class="opacity-20 hover:opacity-100 transition-opacity duration-300 text-white/60 hover:text-sky-400" title="Acesso Administrativo">
+       <svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+       </svg></button>
+     </nav><!-- Menu Mobile --> <button onclick="toggleMobileMenu()" class="md:hidden text-white p-2">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+      </svg></button>
+    </div><!-- Mobile Menu Dropdown -->
+    <div id="mobileMenu" class="hidden md:hidden pb-4">
+     <div class="flex flex-col gap-4"><a href="#motos" class="text-white/80 hover:text-sky-400 transition-colors font-medium">Motos</a> <a href="#sobre" class="text-white/80 hover:text-sky-400 transition-colors font-medium">Sobre</a> <a href="#contato" class="text-white/80 hover:text-sky-400 transition-colors font-medium">Contato</a>
+      <div class="relative"><input type="text" id="searchInputMobile" placeholder="Buscar moto..." class="w-full bg-white/10 backdrop-blur-sm border border-white/20 rounded-full px-4 py-2 pl-10 text-white placeholder-white/50 focus:outline-none focus:border-sky-400 focus:bg-white/15 transition-all">
+       <svg class="w-5 h-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-white/50" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+       </svg>
+      </div>
+     </div>
+    </div>
+   </div>
+  </header><!-- Modal de Login Admin -->
+  <div id="adminLoginModal" class="hidden fixed inset-0 bg-black/95 backdrop-blur-sm z-[100] flex items-center justify-center p-4">
+   <div class="card-gradient backdrop-blur-sm rounded-3xl border border-white/10 p-6 sm:p-8 max-w-md w-full">
+    <div class="text-center mb-6 sm:mb-8">
+     <div class="w-16 h-16 sm:w-20 sm:h-20 bg-sky-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+      <svg class="w-8 h-8 sm:w-10 sm:h-10 text-sky-400" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+      </svg>
+     </div>
+     <h2 class="font-display text-2xl sm:text-3xl text-sky-400 mb-2">ACESSO RESTRITO</h2>
+     <p class="text-white/60 text-sm sm:text-base">Área Administrativa</p>
+    </div>
+    <form id="adminLoginForm" class="space-y-4 sm:space-y-6">
+     <div><label for="admin_username" class="block text-white/80 text-sm font-medium mb-2">Usuário</label> <input type="text" id="admin_username" required class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-white/40 focus:outline-none focus:border-sky-400 text-sm sm:text-base" placeholder="Digite seu usuário">
+     </div>
+     <div><label for="admin_password" class="block text-white/80 text-sm font-medium mb-2">Senha</label> <input type="password" id="admin_password" required class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-white/40 focus:outline-none focus:border-sky-400 text-sm sm:text-base" placeholder="Digite sua senha">
+     </div>
+     <div id="loginError" class="hidden bg-red-500/20 border border-red-500/50 rounded-xl p-3 sm:p-4 text-red-400 text-sm">
+      Usuário ou senha incorretos
+     </div>
+     <div class="flex flex-col sm:flex-row gap-3 sm:gap-4"><button type="button" onclick="closeAdminLogin()" class="flex-1 px-4 sm:px-6 py-3 bg-white/5 hover:bg-white/10 rounded-xl font-semibold transition-all text-sm sm:text-base"> Cancelar </button> <button type="submit" class="flex-1 px-4 sm:px-6 py-3 bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-600 hover:to-blue-700 rounded-xl font-semibold transition-all glow-effect text-sm sm:text-base"> Entrar </button>
+     </div>
+    </form>
+   </div>
+  </div><!-- Painel Administrativo -->
+  <div id="adminPanel" class="hidden fixed inset-0 bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 z-[90]"><!-- Conteúdo do painel administrativo será carregado dinamicamente -->
+  </div><!-- Hero Section -->
+  <section class="pt-32 sm:pt-36 lg:pt-40 pb-12 sm:pb-20 px-4 sm:px-6 lg:px-8">
+   <div class="max-w-7xl mx-auto text-center">
+    <h1 class="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl mb-4 sm:mb-6 animate-fade-in-up leading-tight">ACELERE SEUS <span class="text-sky-400">SONHOS</span></h1>
+    <p class="text-base sm:text-lg md:text-xl lg:text-2xl text-white/70 mb-6 sm:mb-8 max-w-3xl mx-auto animate-fade-in-up animate-delay-1 px-2">Encontre a moto perfeita para sua jornada. Qualidade, performance e paixão em cada modelo.</p><a href="#motos" class="inline-block bg-sky-500 hover:bg-sky-600 text-white font-bold px-6 sm:px-8 py-3 sm:py-4 rounded-full text-base sm:text-lg transition-all glow-effect hover:scale-105 animate-fade-in-up animate-delay-2"> EXPLORAR MOTOS </a>
+   </div>
+  </section><!-- Stats Section -->
+  <section class="py-8 sm:py-12 px-4 sm:px-6 lg:px-8 border-y border-white/10 bg-black/20">
+   <div class="max-w-7xl mx-auto">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-8">
+     <div class="text-center animate-fade-in-up animate-delay-1">
+      <div class="font-display text-3xl sm:text-4xl lg:text-5xl text-sky-400">
+       500+
+      </div>
+      <div class="text-white/60 mt-1 sm:mt-2 text-xs sm:text-sm lg:text-base">
+       Motos Vendidas
+      </div>
+     </div>
+     <div class="text-center animate-fade-in-up animate-delay-2">
+      <div class="font-display text-3xl sm:text-4xl lg:text-5xl text-sky-400">
+       40+
+      </div>
+      <div class="text-white/60 mt-1 sm:mt-2 text-xs sm:text-sm lg:text-base">
+       Modelos
+      </div>
+     </div>
+     <div class="text-center animate-fade-in-up animate-delay-3">
+      <div class="font-display text-3xl sm:text-4xl lg:text-5xl text-sky-400">
+       3+
+      </div>
+      <div class="text-white/60 mt-1 sm:mt-2 text-xs sm:text-sm lg:text-base">
+       Anos no Mercado
+      </div>
+     </div>
+     <div class="text-center animate-fade-in-up animate-delay-4">
+      <div class="font-display text-3xl sm:text-4xl lg:text-5xl text-sky-400">
+       100%
+      </div>
+      <div class="text-white/60 mt-1 sm:mt-2 text-xs sm:text-sm lg:text-base">
+       Sonhos Realizados
+      </div>
+     </div>
+    </div>
+   </div>
+  </section><!-- Motos Grid -->
+  <section id="motos" class="py-8 sm:py-12 px-4 sm:px-6 lg:px-8">
+   <div class="max-w-7xl mx-auto relative">
+    <div class="text-center mb-12 sm:mb-16">
+     <h2 class="font-display text-3xl sm:text-4xl lg:text-5xl xl:text-6xl tracking-wide mb-3 sm:mb-4">MOTOS EM <span class="text-sky-400">DESTAQUE</span></h2>
+     <p class="text-white/60 text-sm sm:text-base lg:text-lg max-w-2xl mx-auto px-4">Confira nossa seleção especial de motos com as melhores condições</p>
+    </div><!-- Seta para Voltar --> <button id="loadPrevBtn" class="arrow-button-prev bg-gradient-to-br from-sky-500 to-sky-600 px-4 py-3 rounded-full border-2 border-sky-400" aria-label="Voltar página" style="opacity: 0; pointer-events: none;"> <span class="text-white text-2xl font-bold">&lt;</span> </button> <!-- Seta para Avançar --> <button id="loadMoreBtn" class="arrow-button-next bg-gradient-to-br from-sky-500 to-sky-600 px-4 py-3 rounded-full border-2 border-sky-400" aria-label="Carregar mais motos"> <span class="text-white text-2xl font-bold">&gt;</span> </button> <!-- Mensagem quando não há resultados -->
+    <div id="noResultsMessage" class="hidden text-center py-12 sm:py-16 px-4">
+     <div class="max-w-2xl mx-auto card-gradient backdrop-blur-sm rounded-3xl border border-white/10 p-8 sm:p-12">
+      <svg class="w-16 h-16 sm:w-24 sm:h-24 mx-auto mb-4 sm:mb-6 text-sky-400/50" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+      </svg>
+      <h3 class="font-display text-2xl sm:text-3xl mb-3 sm:mb-4 text-white">Poxa vida!</h3>
+      <p class="text-white/70 text-sm sm:text-base lg:text-lg mb-4 sm:mb-6">Não temos o modelo que você busca, mas você pode entrar em contato conosco para que possamos achar algo mais próximo do que você busca.</p><a href="#contato" class="inline-block bg-sky-500 hover:bg-sky-600 text-white font-semibold px-6 sm:px-8 py-3 rounded-full transition-all glow-effect text-sm sm:text-base"> Entrar em Contato </a>
+     </div>
+    </div>
+    <div id="motos-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8"><!-- As motos serão carregadas dinamicamente aqui -->
+    </div><!-- Botões de navegação mobile -->
+    <div class="flex justify-center gap-4 mt-8 md:hidden"><button id="prevBtnMobile" onclick="navigatePrev()" class="bg-gradient-to-br from-sky-500 to-sky-600 px-6 py-3 rounded-full border-2 border-sky-400 text-white font-bold disabled:opacity-30 disabled:cursor-not-allowed transition-all" style="opacity: 0.3;"> ← Anterior </button> <button id="nextBtnMobile" onclick="navigateNext()" class="bg-gradient-to-br from-sky-500 to-sky-600 px-6 py-3 rounded-full border-2 border-sky-400 text-white font-bold disabled:opacity-30 disabled:cursor-not-allowed transition-all"> Próximo → </button>
+    </div>
+   </div>
+  </section><!-- About Section -->
+  <section id="sobre" class="relative py-12 sm:py-20 px-4 sm:px-6 lg:px-8">
+   <div class="max-w-7xl mx-auto">
+    <h2 class="font-display text-3xl sm:text-4xl lg:text-5xl tracking-wide mb-4 sm:mb-6">POR QUE ESCOLHER A <span class="text-sky-400">T-POWER MOTOS</span>?</h2>
+    <p class="text-white/70 text-sm sm:text-base lg:text-lg mb-8 sm:mb-10 max-w-3xl">Há mais de 3 anos no mercado, somos referência em qualidade e atendimento. Nossa missão é realizar o sonho de cada cliente com as melhores condições.</p>
+    <div class="space-y-6 sm:space-y-8">
+     <div class="flex items-start gap-3 sm:gap-4">
+      <div class="w-10 h-10 sm:w-12 sm:h-12 bg-sky-500/20 rounded-xl flex items-center justify-center flex-shrink-0">
+       <svg class="w-5 h-5 sm:w-6 sm:h-6 text-sky-400" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+       </svg>
+      </div>
+      <div>
+       <h3 class="font-semibold text-base sm:text-lg mb-1">Garantia Exclusiva</h3>
+       <p class="text-white/60 text-sm sm:text-base">Todas as motos com a nossa garantia exclusiva.</p>
+      </div>
+     </div>
+     <div class="flex items-start gap-3 sm:gap-4">
+      <div class="w-10 h-10 sm:w-12 sm:h-12 bg-sky-500/20 rounded-xl flex items-center justify-center flex-shrink-0">
+       <svg class="w-5 h-5 sm:w-6 sm:h-6 text-sky-400" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8V7m0 1v8m0 0v1" />
+       </svg>
+      </div>
+      <div>
+       <h3 class="font-semibold text-base sm:text-lg mb-1">Financiamento Facilitado</h3>
+       <p class="text-white/60 text-sm sm:text-base">Parcelas que cabem no seu bolso com as melhores taxas do mercado.</p>
+      </div>
+     </div>
+     <div class="flex items-start gap-3 sm:gap-4">
+      <div class="w-10 h-10 sm:w-12 sm:h-12 bg-sky-500/20 rounded-xl flex items-center justify-center flex-shrink-0">
+       <svg class="w-5 h-5 sm:w-6 sm:h-6 text-sky-400" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+       </svg>
+      </div>
+      <div>
+       <h3 class="font-semibold text-base sm:text-lg mb-1">Entrega Rápida</h3>
+       <p class="text-white/60 text-sm sm:text-base">Sua moto emplacada e pronta para rodar em até 48 horas.</p>
+      </div>
+     </div>
+    </div>
+   </div>
+  </section><!-- Location Section -->
+  <section class="relative py-6 sm:py-8 px-4 sm:px-6 lg:px-8">
+   <div class="max-w-7xl mx-auto">
+    <div class="relative">
+     <div class="absolute inset-0 bg-sky-500/20 rounded-3xl blur-3xl"></div>
+     <div class="relative card-gradient backdrop-blur-sm rounded-3xl border border-white/10 p-6 sm:p-8"><a href="https://maps.app.goo.gl/Ywv6CSnBtteLyETU6" target="_blank" rel="noopener noreferrer" class="block">
+       <div class="text-center p-6 sm:p-10 bg-white/5 rounded-2xl hover:bg-white/10 transition cursor-pointer">
+        <div class="w-16 h-16 sm:w-20 sm:h-20 bg-sky-500/20 rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6">
+         <svg class="w-8 h-8 sm:w-10 sm:h-10 text-sky-400" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+         </svg>
+        </div>
+        <div class="font-display text-xl sm:text-2xl mb-2">
+         Nossa Localização
+        </div>
+        <div class="text-white/60 text-xs sm:text-sm">
+         Clique para abrir no Google Maps
+        </div>
+       </div></a>
+     </div>
+    </div>
+   </div>
+  </section><!-- Contact Section -->
+  <section id="contato" class="py-12 sm:py-20 px-4 sm:px-6 lg:px-8">
+   <div class="max-w-7xl mx-auto">
+    <div class="text-center mb-12 sm:mb-16">
+     <h2 class="font-display text-3xl sm:text-4xl lg:text-5xl tracking-wide mb-3 sm:mb-4">ENTRE EM <span class="text-sky-400">CONTATO</span></h2>
+     <p class="text-white/60 text-sm sm:text-base lg:text-lg max-w-2xl mx-auto">Estamos prontos para te ajudar a encontrar a moto perfeita</p>
+    </div>
+    <div class="grid lg:grid-cols-2 gap-8 sm:gap-12">
+     <div class="card-gradient backdrop-blur-sm rounded-2xl border border-white/10 p-6 sm:p-8">
+      <form id="contact-form" class="space-y-4 sm:space-y-6">
+       <div class="grid sm:grid-cols-2 gap-4 sm:gap-6">
+        <div><label for="name" class="block text-sm font-medium text-white/80 mb-2">Nome</label> <input type="text" id="name" name="name" required class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-white/40 focus:outline-none focus:border-sky-400 transition-colors text-sm sm:text-base" placeholder="Seu nome">
+        </div>
+        <div><label for="phone" class="block text-sm font-medium text-white/80 mb-2">Telefone</label> <input type="tel" id="phone" name="phone" required class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-white/40 focus:outline-none focus:border-sky-400 transition-colors text-sm sm:text-base" placeholder="(00) 00000-0000">
+        </div>
+       </div>
+       <div><label for="email" class="block text-sm font-medium text-white/80 mb-2">E-mail</label> <input type="email" id="email" name="email" required class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-white/40 focus:outline-none focus:border-sky-400 transition-colors text-sm sm:text-base" placeholder="seu@email.com">
+       </div>
+       <div><label for="interest" class="block text-sm font-medium text-white/80 mb-2">Moto de Interesse</label> <select id="interest" name="interest" class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white focus:outline-none focus:border-sky-400 transition-colors text-sm sm:text-base"> <option value="" class="bg-gray-900">Selecione uma moto</option> <option value="cb500f" class="bg-gray-900">Honda CB 500F</option> <option value="mt03" class="bg-gray-900">Yamaha MT-03</option> <option value="ninja400" class="bg-gray-900">Kawasaki Ninja 400</option> <option value="outro" class="bg-gray-900">Outra</option> </select>
+       </div>
+       <div><label for="message" class="block text-sm font-medium text-white/80 mb-2">Mensagem</label> <textarea id="message" name="message" rows="4" class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-white/40 focus:outline-none focus:border-sky-400 transition-colors resize-none text-sm sm:text-base" placeholder="Como podemos ajudar?"></textarea>
+       </div><button type="submit" class="w-full bg-sky-500 hover:bg-sky-600 text-white font-semibold py-3 sm:py-4 rounded-xl transition-all duration-300 glow-effect hover-glow flex items-center justify-center gap-2 text-sm sm:text-base"> Enviar Mensagem 
+        <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+        </svg></button>
+      </form>
+      <div id="form-success" class="hidden text-center py-8">
+       <div class="w-12 h-12 sm:w-16 sm:h-16 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+        <svg class="w-6 h-6 sm:w-8 sm:h-8 text-green-400" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+        </svg>
+       </div>
+       <h3 class="font-display text-xl sm:text-2xl mb-2">Mensagem Enviada!</h3>
+       <p class="text-white/60 text-sm sm:text-base">Entraremos em contato em breve.</p>
+      </div>
+     </div>
+     <div class="space-y-4 sm:space-y-6">
+      <div class="card-gradient backdrop-blur-sm rounded-2xl border border-white/10 p-5 sm:p-6 flex items-start gap-3 sm:gap-4">
+       <div class="w-10 h-10 sm:w-12 sm:h-12 bg-sky-500/20 rounded-xl flex items-center justify-center flex-shrink-0">
+        <svg class="w-5 h-5 sm:w-6 sm:h-6 text-sky-400" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+        </svg>
+       </div>
+       <div>
+        <h3 class="font-semibold text-base sm:text-lg mb-1">Endereço</h3>
+        <p class="text-white/60 text-sm sm:text-base">Av. Paineiras, 93 - Eucaliptos<br>
+         Fazenda Rio Grande - PR, 83820-479</p>
+       </div>
+      </div>
+      <div class="card-gradient backdrop-blur-sm rounded-2xl border border-white/10 p-5 sm:p-6 flex items-start gap-3 sm:gap-4">
+       <div class="w-10 h-10 sm:w-12 sm:h-12 bg-sky-500/20 rounded-xl flex items-center justify-center flex-shrink-0">
+        <svg class="w-5 h-5 sm:w-6 sm:h-6 text-sky-400" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+        </svg>
+       </div>
+       <div>
+        <h3 class="font-semibold text-base sm:text-lg mb-1">Telefone</h3>
+        <p class="text-white/60 text-sm sm:text-base">(41) 99697-7148</p>
+       </div>
+      </div>
+      <div class="card-gradient backdrop-blur-sm rounded-2xl border border-white/10 p-5 sm:p-6 flex items-start gap-3 sm:gap-4">
+       <div class="w-10 h-10 sm:w-12 sm:h-12 bg-sky-500/20 rounded-xl flex items-center justify-center flex-shrink-0">
+        <svg class="w-5 h-5 sm:w-6 sm:h-6 text-sky-400" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+       </div>
+       <div>
+        <h3 class="font-semibold text-base sm:text-lg mb-1">Horário</h3>
+        <p class="text-white/60 text-sm sm:text-base">Seg - Sex: 9h às 18h<br>
+         Sáb: 9h às 15h</p>
+       </div>
+      </div>
+      <div class="card-gradient backdrop-blur-sm rounded-2xl border border-white/10 p-5 sm:p-6">
+       <h3 class="font-semibold text-base sm:text-lg mb-4">Redes Sociais</h3>
+       <div class="flex gap-3 sm:gap-4"><a href="https://www.facebook.com/share/1C2XCLTMdC/?mibextid=wwXIfr" target="_blank" rel="noopener noreferrer" class="w-10 h-10 sm:w-12 sm:h-12 bg-white/5 hover:bg-sky-500 rounded-xl flex items-center justify-center transition-colors">
+         <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="currentColor" viewbox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+         </svg></a> <a href="https://www.instagram.com/tpowermotos?igsh=cXBmcXRmZ2RnZHdm" target="_blank" rel="noopener noreferrer" class="w-10 h-10 sm:w-12 sm:h-12 bg-white/5 hover:bg-sky-500 rounded-xl flex items-center justify-center transition-colors">
+         <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="currentColor" viewbox="0 0 24 24"><path d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.067.06 1.407.06 4.123v.08c0 2.643-.012 2.987-.06 4.043-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.067.048-1.407.06-4.123.06h-.08c-2.643 0-2.987-.012-4.043-.06-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.047-1.024-.06-1.379-.06-3.808v-.63c0-2.43.013-2.784.06-3.808.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 015.45 2.525c.636-.247 1.363-.416 2.427-.465C8.901 2.013 9.256 2 11.685 2h.63zm-.081 1.802h-.468c-2.456 0-2.784.011-3.807.058-.975.045-1.504.207-1.857.344-.467.182-.8.398-1.15.748-.35.35-.566.683-.748 1.15-.137.353-.3.882-.344 1.857-.047 1.023-.058 1.351-.058 3.807v.468c0 2.456.011 2.784.058 3.807.045.975.207 1.504.344 1.857.182.466.399.8.748 1.15.35.35.683.566 1.15.748.353.137.882.3 1.857.344 1.054.048 1.37.058 4.041.058h.08c2.597 0 2.917-.01 3.96-.058.976-.045 1.505-.207 1.858-.344.466-.182.8-.398 1.15-.748.35-.35.566-.683.748-1.15.137-.353.3-.882.344-1.857.048-1.055.058-1.37.058-4.041v-.08c0-2.597-.01-2.917-.058-3.96-.045-.976-.207-1.505-.344-1.858a3.097 3.097 0 00-.748-1.15 3.098 3.098 0 00-1.15-.748c-.353-.137-.882-.3-1.857-.344-1.023-.047-1.351-.058-3.807-.058zM12 6.865a5.135 5.135 0 110 10.27 5.135 5.135 0 010-10.27zm0 1.802a3.333 3.333 0 100 6.666 3.333 3.333 0 000-6.666zm5.338-3.205a1.2 1.2 0 110 2.4 1.2 1.2 0 010-2.4z" />
+         </svg></a> <a href="https://wa.me/5541996977148" target="_blank" rel="noopener noreferrer" class="w-10 h-10 sm:w-12 sm:h-12 bg-white/5 hover:bg-sky-500 rounded-xl flex items-center justify-center transition-colors">
+         <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="currentColor" viewbox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+         </svg></a> <a href="https://youtube.com/@tpowermotos" target="_blank" rel="noopener noreferrer" class="w-10 h-10 sm:w-12 sm:h-12 bg-white/5 hover:bg-sky-500 rounded-xl flex items-center justify-center transition-colors">
+         <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="currentColor" viewbox="0 0 24 24"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z" />
+         </svg></a>
+       </div>
+      </div>
+     </div>
+    </div>
+   </div>
+  </section><!-- Footer -->
+  <footer class="py-8 sm:py-12 px-4 sm:px-6 lg:px-8 border-t border-white/10">
+   <div class="max-w-7xl mx-auto text-center">
+    <div class="flex items-center justify-center gap-3 mb-4"><img src="https://i.imgur.com/FyCqY2d.png" alt="T-Power Motos Logo" class="h-12 sm:h-16 lg:h-20 w-auto hover:scale-110 transition-transform duration-300" loading="lazy" onerror="this.style.display='none';">
+    </div>
+    <p class="text-white/60 text-xs sm:text-sm">© 2024 T-Power Motos. Todos os direitos reservados.</p>
+   </div>
+  </footer>
+  <script>
+    // SISTEMA DE INDICADOR VISUAL DE SALVAMENTO
+    function showSavingIndicator() {
+      const indicator = document.getElementById('savingIndicator');
+      const text = document.getElementById('savingText');
+      text.textContent = 'Salvando...';
+      indicator.style.display = 'flex';
+    }
+
+    function showSavedIndicator() {
+      const indicator = document.getElementById('savingIndicator');
+      const text = document.getElementById('savingText');
+      text.textContent = '✅ Salvo com Sucesso!';
+      indicator.style.background = 'linear-gradient(135deg, #10b981 0%, #059669 100%)';
+      
+      setTimeout(() => {
+        indicator.style.display = 'none';
+        indicator.style.background = 'linear-gradient(135deg, #0ea5e9 0%, #3b82f6 100%)';
+      }, 2000);
+    }
+
+    function showSaveError() {
+      const indicator = document.getElementById('savingIndicator');
+      const text = document.getElementById('savingText');
+      text.textContent = '❌ Erro ao Salvar';
+      indicator.style.background = 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)';
+      
+      setTimeout(() => {
+        indicator.style.display = 'none';
+        indicator.style.background = 'linear-gradient(135deg, #0ea5e9 0%, #3b82f6 100%)';
+      }, 3000);
+    }
+
+    // Configuração do Data SDK para persistência
+    let dataInitialized = false;
+    let currentData = [];
+
+    // Handler do Data SDK
+    const dataHandler = {
+      onDataChanged(data) {
+        console.log('📊 Dados recebidos do servidor:', data.length, 'registros');
+        currentData = data;
+        
+        // CRÍTICO: Carregar dados SEM apagar os existentes
+        data.forEach(record => {
+          if (record.data_type === 'moto_data') {
+            motoDataStorage[record.moto_id] = JSON.parse(record.data_json);
+          } else if (record.data_type === 'thumbnail') {
+            thumbnailStorage[record.moto_id] = record.data_json;
+          } else if (record.data_type === 'photos') {
+            photosStorage[record.moto_id] = JSON.parse(record.data_json);
+          }
+        });
+        
+        // Atualizar o site automaticamente quando houver mudanças
+        // Mas APENAS se não estivermos no painel admin
+        const isAdminPanelOpen = !document.getElementById('adminPanel').classList.contains('hidden');
+        
+        if (!isAdminPanelOpen) {
+          // Estamos na visualização normal do site - atualizar cards
+          renderMotoCards();
+          showPage(currentPage);
+        } else {
+          // Estamos no painel admin - atualizar apenas os contadores
+          updateAdminPanelCounters();
+        }
+      }
+    };
+
+    // Inicializar SDK
+    async function initDataSDK() {
+      if (dataInitialized) return;
+      
+      console.log('🔄 Inicializando sistema de salvamento...');
+      
+      try {
+        const result = await window.dataSdk.init(dataHandler);
+        if (result.isOk) {
+          dataInitialized = true;
+          console.log('✅ Sistema de armazenamento CONECTADO e FUNCIONANDO!');
+          console.log('💾 Todos os dados agora serão salvos permanentemente na Planilha do Canva');
+        } else {
+          console.error('❌ Erro ao conectar armazenamento:', result.error);
+          showToast('❌ Erro ao conectar sistema de salvamento', 'error');
+        }
+      } catch (error) {
+        console.error('❌ Erro ao inicializar:', error);
+        showToast('❌ Erro ao inicializar sistema', 'error');
+      }
+    }
+
+    // Salvar dados no SDK com RETRY automático
+    async function saveToSDK(motoId, dataType, dataContent, retryCount = 0) {
+      const MAX_RETRIES = 3;
+      
+      console.log(`🔵 TENTATIVA ${retryCount + 1}/${MAX_RETRIES + 1} - Salvando:`, { motoId, dataType });
+      
+      // Validações iniciais
+      if (!motoId || !dataType) {
+        const errorMsg = 'Erro: motoId ou dataType não fornecido';
+        console.error('❌', errorMsg);
+        showToast('❌ ' + errorMsg, 'error');
+        showSaveError();
+        return false;
+      }
+
+      // Garantir inicialização
+      if (!dataInitialized) {
+        console.log('⚠️ SDK não inicializado, inicializando agora...');
+        await initDataSDK();
+        
+        // Aguardar mais um pouco para garantir
+        await new Promise(resolve => setTimeout(resolve, 500));
+      }
+
+      // Verificar se SDK existe
+      if (!window.dataSdk) {
+        const errorMsg = 'Sistema de salvamento não disponível';
+        console.error('❌ CRÍTICO:', errorMsg);
+        showToast('❌ ' + errorMsg + '. Recarregue a página.', 'error');
+        showSaveError();
+        return false;
+      }
+
+      showSavingIndicator();
+
+      // Buscar registro existente
+      const existing = currentData.find(r => r.moto_id === motoId && r.data_type === dataType);
+      
+      // Converter dados para string se necessário
+      const dataString = typeof dataContent === 'string' ? dataContent : JSON.stringify(dataContent);
+      
+      console.log('📦 Preparando dados:', { 
+        motoId, 
+        dataType, 
+        tamanhoBytes: dataString.length, 
+        temExistente: !!existing,
+        totalRegistros: currentData.length
+      });
+      
+      try {
+        let result;
+        
+        if (existing) {
+          // Atualizar existente
+          console.log('📝 ATUALIZANDO registro existente');
+          console.log('📋 Dados antigos:', existing.data_json.substring(0, 100) + '...');
+          
+          existing.data_json = dataString;
+          existing.updated_at = new Date().toISOString();
+          
+          console.log('🔄 Chamando window.dataSdk.update...');
+          result = await window.dataSdk.update(existing);
+          
+        } else {
+          // Criar novo
+          console.log('➕ CRIANDO novo registro');
+          
+          const newRecord = {
+            moto_id: motoId,
+            data_type: dataType,
+            data_json: dataString,
+            updated_at: new Date().toISOString()
+          };
+          
+          console.log('📋 Novo registro:', {
+            moto_id: newRecord.moto_id,
+            data_type: newRecord.data_type,
+            tamanho: newRecord.data_json.length,
+            updated_at: newRecord.updated_at
+          });
+          
+          console.log('🔄 Chamando window.dataSdk.create...');
+          result = await window.dataSdk.create(newRecord);
+        }
+        
+        console.log('📤 Resultado:', { isOk: result.isOk, isError: result.isError });
+        
+        if (result.isOk) {
+          console.log('✅✅✅ SUCESSO TOTAL!');
+          showSavedIndicator();
+          return true;
+          
+        } else {
+          // Falhou - tentar retry
+          console.error('❌ Falhou:', result.error);
+          
+          if (retryCount < MAX_RETRIES) {
+            console.log(`🔄 Tentando novamente em 1 segundo... (${retryCount + 1}/${MAX_RETRIES})`);
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            return saveToSDK(motoId, dataType, dataContent, retryCount + 1);
+          } else {
+            const errorMsg = `Falha após ${MAX_RETRIES + 1} tentativas: ${JSON.stringify(result.error)}`;
+            console.error('❌❌❌', errorMsg);
+            showToast('❌ Erro ao salvar. Tente novamente.', 'error');
+            showSaveError();
+            return false;
+          }
+        }
+        
+      } catch (error) {
+        console.error('❌❌❌ EXCEÇÃO:', error.message);
+        console.error('Stack:', error.stack);
+        
+        if (retryCount < MAX_RETRIES) {
+          console.log(`🔄 Retry após exceção... (${retryCount + 1}/${MAX_RETRIES})`);
+          await new Promise(resolve => setTimeout(resolve, 1000));
+          return saveToSDK(motoId, dataType, dataContent, retryCount + 1);
+        } else {
+          showToast('❌ Erro crítico ao salvar', 'error');
+          showSaveError();
+          return false;
+        }
+      }
+    }
+
+    // Banco de dados completo das 30 motos
+    const motosDatabase = {
+      'cb500f': { name: 'CB 500F', brand: 'Honda', year: '2024', price: 'R$ 35.990', badge: 'NOVO', description: 'Motor 471cc, potência de 50cv. Ideal para o dia a dia.', specs: { motor: '471cc bicilíndrico', potencia: '47 cv @ 8.500 rpm', torque: '4,4 kgf.m @ 7.000 rpm' }, features: ['ABS de série', 'Painel LCD', 'Econômica'] },
+      'mt03': { name: 'MT-03', brand: 'Yamaha', year: '2024', price: 'R$ 27.990', description: 'Motor 321cc, design agressivo e esportivo.', specs: { motor: '321cc bicilíndrico', potencia: '42 cv @ 10.750 rpm', torque: '3,0 kgf.m @ 9.000 rpm' }, features: ['Design MT', 'ABS duplo canal', 'Leve e ágil'] },
+      'ninja400': { name: 'Ninja 400', brand: 'Kawasaki', year: '2024', price: 'R$ 32.500', badge: 'DESTAQUE', description: 'Motor 399cc, estilo esportivo inconfundível.', specs: { motor: '399cc bicilíndrico', potencia: '49 cv @ 10.000 rpm', torque: '3,8 kgf.m @ 8.000 rpm' }, features: ['Full fairing', 'ABS', 'Esportiva'] },
+      'gsx-s750': { name: 'GSX-S750', brand: 'Suzuki', year: '2024', price: 'R$ 45.990', description: 'Motor 749cc, alta performance e conforto.', specs: { motor: '749cc 4 cilindros', potencia: '114 cv @ 10.500 rpm', torque: '8,2 kgf.m @ 9.000 rpm' }, features: ['4 cilindros', 'ABS 3 estágios', 'TFT colorido'] },
+      'g310r': { name: 'G 310 R', brand: 'BMW', year: '2024', price: 'R$ 24.900', description: 'Motor 313cc, tecnologia alemã premium.', specs: { motor: '313cc monocilíndrico', potencia: '34 cv @ 9.500 rpm', torque: '2,8 kgf.m @ 7.500 rpm' }, features: ['Qualidade BMW', 'ABS', 'Suspensão invertida'] },
+      'duke390': { name: 'Duke 390', brand: 'KTM', year: '2024', price: 'R$ 29.900', badge: 'NOVO', description: 'Motor 373cc, agressiva e ágil nas ruas.', specs: { motor: '373cc monocilíndrico', potencia: '44 cv @ 9.000 rpm', torque: '3,7 kgf.m @ 7.000 rpm' }, features: ['TFT 5"', 'ABS Cornering', 'Quickshifter'] },
+      'xre300': { name: 'XRE 300', brand: 'Honda', year: '2024', price: 'R$ 23.500', description: 'Motor 286cc, adventure compacta e versátil.', specs: { motor: '286cc monocilíndrico', potencia: '25,3 cv @ 7.250 rpm', torque: '2,6 kgf.m @ 5.500 rpm' }, features: ['Adventure', 'Econômica', 'Para-brisa'] },
+      'factor150': { name: 'Factor 150', brand: 'Yamaha', year: '2024', price: 'R$ 12.990', description: 'Motor 149cc, ideal para o dia a dia urbano.', specs: { motor: '149cc monocilíndrico', potencia: '12,2 cv @ 7.500 rpm', torque: '1,27 kgf.m @ 6.000 rpm' }, features: ['Econômica', 'Leve', 'Confiável'] },
+      'cg160': { name: 'CG 160', brand: 'Honda', year: '2024', price: 'R$ 13.900', description: 'Motor 162cc, tradição e economia.', specs: { motor: '162cc monocilíndrico', potencia: '16,9 cv @ 8.000 rpm', torque: '1,6 kgf.m @ 6.500 rpm' }, features: ['Confiável', 'Econômica', 'Start/Stop'] },
+      'fazer250': { name: 'Fazer 250', brand: 'Yamaha', year: '2024', price: 'R$ 19.900', description: 'Motor 249cc, esportiva versátil.', specs: { motor: '249cc monocilíndrico', potencia: '21 cv @ 8.000 rpm', torque: '2,1 kgf.m @ 6.500 rpm' }, features: ['ABS', 'Painel digital', 'Carenada'] },
+      'twister250': { name: 'Twister 250', brand: 'Honda', year: '2024', price: 'R$ 18.500', description: 'Motor 249cc, adventure urbana.', specs: { motor: '249cc monocilíndrico', potencia: '23 cv @ 8.500 rpm', torque: '2,16 kgf.m @ 7.000 rpm' }, features: ['ABS', 'Adventure', 'LED'] },
+      'z400': { name: 'Z 400', brand: 'Kawasaki', year: '2024', price: 'R$ 30.900', description: 'Motor 399cc, naked agressiva.', specs: { motor: '399cc bicilíndrico', potencia: '45 cv @ 9.000 rpm', torque: '3,7 kgf.m @ 7.000 rpm' }, features: ['ABS', 'Design radical', 'TFT'] },
+      'versys650': { name: 'Versys 650', brand: 'Kawasaki', year: '2024', price: 'R$ 42.900', description: 'Motor 649cc, adventure touring.', specs: { motor: '649cc bicilíndrico', potencia: '69 cv @ 8.500 rpm', torque: '6,3 kgf.m @ 7.000 rpm' }, features: ['Adventure', 'ABS', 'Touring'] },
+      'tiger900': { name: 'Tiger 900', brand: 'Triumph', year: '2024', price: 'R$ 62.900', description: 'Motor 888cc, adventure premium.', specs: { motor: '888cc 3 cilindros', potencia: '95 cv @ 8.750 rpm', torque: '8,7 kgf.m @ 7.250 rpm' }, features: ['TFT', 'Modos de pilotagem', 'Controle de tração'] },
+      'r1250gs': { name: 'R 1250 GS', brand: 'BMW', year: '2024', price: 'R$ 89.900', description: 'Motor 1254cc, a rainha das adventures.', specs: { motor: '1254cc boxer', potencia: '136 cv @ 7.750 rpm', torque: '14,3 kgf.m @ 6.250 rpm' }, features: ['ShiftCam', 'TFT', 'Cruise control'] },
+      'multistrada': { name: 'Multistrada V4', brand: 'Ducati', year: '2024', price: 'R$ 115.900', description: 'Motor 1158cc, esportividade e touring.', specs: { motor: '1158cc V4', potencia: '170 cv @ 10.500 rpm', torque: '12,6 kgf.m @ 8.750 rpm' }, features: ['V4', 'Radar', 'TFT 6.5"'] },
+      'cbr600rr': { name: 'CBR 600RR', brand: 'Honda', year: '2024', price: 'R$ 54.900', description: 'Motor 599cc, supersport pura.', specs: { motor: '599cc 4 cilindros', potencia: '121 cv @ 13.500 rpm', torque: '6,5 kgf.m @ 11.000 rpm' }, features: ['Supersport', 'Quick shifter', 'Eletrônica'] },
+      'r6': { name: 'YZF-R6', brand: 'Yamaha', year: '2024', price: 'R$ 58.900', description: 'Motor 599cc, DNA de pista.', specs: { motor: '599cc 4 cilindros', potencia: '117 cv @ 14.500 rpm', torque: '6,1 kgf.m @ 10.500 rpm' }, features: ['Supersport', 'TFT', 'DNA R1'] },
+      'panigale': { name: 'Panigale V2', brand: 'Ducati', year: '2024', price: 'R$ 98.900', description: 'Motor 955cc, paixão italiana.', specs: { motor: '955cc bicilíndrico', potencia: '155 cv @ 10.750 rpm', torque: '10,4 kgf.m @ 9.000 rpm' }, features: ['Desmo', 'Eletrônica avançada', 'Carenagem'] },
+      'monster': { name: 'Monster 937', brand: 'Ducati', year: '2024', price: 'R$ 72.900', description: 'Motor 937cc, naked italiana.', specs: { motor: '937cc bicilíndrico', potencia: '111 cv @ 9.250 rpm', torque: '9,5 kgf.m @ 6.500 rpm' }, features: ['Naked', 'TFT 4.3"', 'Modos'] },
+      'street-triple': { name: 'Street Triple', brand: 'Triumph', year: '2024', price: 'R$ 54.900', description: 'Motor 765cc, 3 cilindros único.', specs: { motor: '765cc 3 cilindros', potencia: '118 cv @ 12.000 rpm', torque: '8,0 kgf.m @ 9.350 rpm' }, features: ['3 cilindros', 'TFT', 'Quickshifter'] },
+      'f900r': { name: 'F 900 R', brand: 'BMW', year: '2024', price: 'R$ 48.900', description: 'Motor 895cc, naked alemã.', specs: { motor: '895cc bicilíndrico', potencia: '105 cv @ 8.500 rpm', torque: '9,3 kgf.m @ 6.500 rpm' }, features: ['Modos', 'TFT', 'ABS Pro'] },
+      'tracer9': { name: 'Tracer 9', brand: 'Yamaha', year: '2024', price: 'R$ 56.900', description: 'Motor 889cc, sport touring.', specs: { motor: '889cc 3 cilindros', potencia: '119 cv @ 10.000 rpm', torque: '9,3 kgf.m @ 7.000 rpm' }, features: ['Touring', 'TFT', 'Cruise control'] },
+      'super-adventure': { name: 'Super Adventure', brand: 'KTM', year: '2024', price: 'R$ 78.900', description: 'Motor 1301cc, adventure radical.', specs: { motor: '1301cc bicilíndrico', potencia: '160 cv @ 9.500 rpm', torque: '14,0 kgf.m @ 6.500 rpm' }, features: ['TFT 7"', 'Eletrônica completa', 'Cruise'] },
+      'goldwing': { name: 'Gold Wing', brand: 'Honda', year: '2024', price: 'R$ 165.900', description: 'Motor 1833cc, luxo máximo.', specs: { motor: '1833cc 6 cilindros', potencia: '126 cv @ 5.500 rpm', torque: '17,0 kgf.m @ 4.500 rpm' }, features: ['6 cilindros', 'DCT', 'Airbag'] },
+      'hayabusa': { name: 'Hayabusa', brand: 'Suzuki', year: '2024', price: 'R$ 94.900', description: 'Motor 1340cc, lenda da velocidade.', specs: { motor: '1340cc 4 cilindros', potencia: '190 cv @ 9.700 rpm', torque: '15,0 kgf.m @ 7.000 rpm' }, features: ['Aerodinâmica', 'Cruise control', 'TFT'] },
+      'diavel': { name: 'Diavel 1260', brand: 'Ducati', year: '2024', price: 'R$ 108.900', description: 'Motor 1262cc, power cruiser.', specs: { motor: '1262cc Testastretta', potencia: '162 cv @ 9.500 rpm', torque: '13,0 kgf.m @ 7.500 rpm' }, features: ['Cruiser', 'TFT', 'Modos'] },
+      'rebel1100': { name: 'Rebel 1100', brand: 'Honda', year: '2024', price: 'R$ 52.900', description: 'Motor 1084cc, cruiser moderna.', specs: { motor: '1084cc bicilíndrico', potencia: '87 cv @ 7.000 rpm', torque: '9,8 kgf.m @ 4.750 rpm' }, features: ['DCT', 'Cruiser', 'TFT'] },
+      'bonneville': { name: 'Bonneville T120', brand: 'Triumph', year: '2024', price: 'R$ 58.900', description: 'Motor 1200cc, clássica moderna.', specs: { motor: '1200cc bicilíndrico', potencia: '80 cv @ 6.550 rpm', torque: '10,5 kgf.m @ 3.100 rpm' }, features: ['Clássica', 'ABS', 'Torque baixo'] },
+      'softail': { name: 'Softail Standard', brand: 'Harley-Davidson', year: '2024', price: 'R$ 74.900', description: 'Motor 1746cc, estilo americano.', specs: { motor: '1746cc Milwaukee-Eight', potencia: '93 cv @ 5.020 rpm', torque: '15,7 kgf.m @ 3.000 rpm' }, features: ['V-Twin', 'Cruiser', 'Clássica'] }
+    };
+
+    // Storage de fotos, miniaturas e dados editados
+    const photosStorage = {};
+    const thumbnailStorage = {};
+    const motoDataStorage = {};
+
+    // Sistema de Login Admin
+    const ADMIN_USER = 'admin';
+    const ADMIN_PASS = 'tpower2024';
+
+    function showAdminLogin() {
+      document.getElementById('adminLoginModal').classList.remove('hidden');
+      document.getElementById('admin_username').focus();
+    }
+
+    function closeAdminLogin() {
+      document.getElementById('adminLoginModal').classList.add('hidden');
+      document.getElementById('adminLoginForm').reset();
+      document.getElementById('loginError').classList.add('hidden');
+    }
+
+    document.getElementById('adminLoginForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const username = document.getElementById('admin_username').value;
+      const password = document.getElementById('admin_password').value;
+      
+      if (username === ADMIN_USER && password === ADMIN_PASS) {
+        closeAdminLogin();
+        loadAdminPanel();
+      } else {
+        const errorDiv = document.getElementById('loginError');
+        errorDiv.classList.remove('hidden');
+        errorDiv.classList.add('shake');
+        setTimeout(() => {
+          errorDiv.classList.remove('shake');
+        }, 500);
+      }
+    });
+
+    // NOVA FUNÇÃO: Abrir painel admin em nova aba
+    function openAdminInNewTab(event) {
+      event.preventDefault();
+      window.open(window.location.href.split('#')[0] + '#admin-panel', '_blank');
+    }
+
+    // Toggle menu mobile
+    function toggleMobileMenu() {
+      const menu = document.getElementById('mobileMenu');
+      menu.classList.toggle('hidden');
+    }
+
+    // Sincronizar busca mobile com desktop
+    document.getElementById('searchInputMobile').addEventListener('input', function(e) {
+      document.getElementById('searchInput').value = e.target.value;
+      searchMotos(e.target.value);
+    });
+
+    // Função para obter dados da moto (prioriza storage, depois database)
+    function getMotoData(motoId) {
+      if (motoDataStorage[motoId]) {
+        return motoDataStorage[motoId];
+      }
+      return motosDatabase[motoId];
+    }
+
+    // Renderizar cards das motos
+    function renderMotoCards() {
+      const grid = document.getElementById('motos-grid');
+      grid.innerHTML = '';
+      
+      Object.entries(motosDatabase).forEach(([id, defaultMoto]) => {
+        // SEMPRE pega dados do storage primeiro, se existir
+        const moto = motoDataStorage[id] || getMotoData(id);
+        const thumbnail = thumbnailStorage[id];
+        
+        const card = document.createElement('div');
+        card.className = 'moto-card visible group card-gradient backdrop-blur-sm rounded-2xl border border-white/10 transition-all duration-500 hover-glow cursor-pointer';
+        card.setAttribute('data-moto-id', id);
+        card.onclick = () => showMotoDetail(id);
+        
+        let imageHTML = '';
+        if (thumbnail) {
+          imageHTML = `<img src="${thumbnail}" alt="${moto.brand} ${moto.name}" loading="lazy" class="thumbnail-preview" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">`;
+        }
+        
+        card.innerHTML = `
+          <div class="relative p-4 sm:p-6 bg-gradient-to-br from-sky-500/10 to-transparent">
+            ${moto.badge ? `<div class="absolute top-3 right-3 sm:top-4 sm:right-4 bg-${moto.badge === 'NOVO' ? 'sky' : 'red'}-500 text-white text-xs font-bold px-2 sm:px-3 py-1 rounded-full z-10">${moto.badge}</div>` : ''}
+            ${imageHTML}
+            <svg class="w-full h-40 sm:h-48 mx-auto ${thumbnail ? 'hidden' : ''}" viewBox="0 0 200 150" fill="none">
+              <circle cx="40" cy="110" r="25" stroke="#38BDF8" stroke-width="3" fill="none" />
+              <circle cx="160" cy="110" r="25" stroke="#38BDF8" stroke-width="3" fill="none" />
+              <path d="M40 110 L60 70 L120 60 L150 80 L160 110" stroke="#FFFFFF" stroke-width="3" fill="none" />
+              <path d="M70 65 Q90 45 110 55 L115 65 L75 70 Z" fill="#38BDF8" />
+              <ellipse cx="165" cy="75" rx="8" ry="10" fill="#FFE066" />
+            </svg>
+          </div>
+          <div class="p-4 sm:p-6">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-sky-400 text-xs sm:text-sm font-bold">${moto.brand}</span>
+              <span class="text-white/40 text-xs sm:text-sm font-semibold">${moto.year}</span>
+            </div>
+            <h3 class="font-display text-xl sm:text-2xl mb-2 font-bold">${moto.name}</h3>
+            <p class="text-white/70 text-xs sm:text-sm mb-4 line-clamp-2 font-semibold">${moto.description}</p>
+            <div class="flex items-end justify-between">
+              <div>
+                <span class="text-white/50 text-xs font-semibold">A partir de</span>
+                <div class="font-display text-2xl sm:text-3xl text-sky-400 font-bold">${moto.price}</div>
+              </div>
+            </div>
+          </div>
+        `;
+        
+        grid.appendChild(card);
+      });
+    }
+
+    // Funções de navegação mobile
+    function navigatePrev() {
+      if (currentPage > 0) {
+        currentPage--;
+        showPage(currentPage);
+      }
+    }
+
+    function navigateNext() {
+      const allMotoCards = document.querySelectorAll('.moto-card');
+      const totalPages = Math.ceil(allMotoCards.length / motosPerPage);
+      if (currentPage < totalPages - 1) {
+        currentPage++;
+        showPage(currentPage);
+      }
+    }
+
+    // Carregar painel administrativo
+    function loadAdminPanel() {
+      const adminPanel = document.getElementById('adminPanel');
+      
+      let adminCardsHTML = '';
+      Object.entries(motosDatabase).forEach(([id, defaultMoto]) => {
+        const moto = getMotoData(id);
+        const photosCount = photosStorage[id] ? photosStorage[id].length : 0;
+        const hasThumbnail = thumbnailStorage[id] ? '✓' : '✗';
+        
+        adminCardsHTML += `
+          <div class="card-gradient backdrop-blur-sm rounded-2xl border border-white/10 hover:border-sky-500/50 transition-all" data-moto-id="${id}">
+            <div class="p-4 sm:p-6">
+              <div class="flex items-center justify-between mb-4">
+                <h3 class="font-display text-xl sm:text-2xl text-sky-400">${moto.name}</h3>
+                <span class="text-white/40 text-xs sm:text-sm">${moto.brand}</span>
+              </div>
+              
+              <div class="grid grid-cols-2 gap-3 mb-6">
+                <div class="bg-white/5 rounded-xl p-3 sm:p-4 text-center">
+                  <div class="text-white/60 text-xs sm:text-sm mb-2">Galeria</div>
+                  <div class="gallery-counter font-display text-2xl sm:text-3xl text-sky-400">${photosCount}</div>
+                </div>
+                <div class="bg-white/5 rounded-xl p-3 sm:p-4 text-center">
+                  <div class="text-white/60 text-xs sm:text-sm mb-2">Miniatura</div>
+                  <div class="thumbnail-indicator font-display text-2xl sm:text-3xl ${hasThumbnail === '✓' ? 'text-green-400' : 'text-red-400'}">${hasThumbnail}</div>
+                </div>
+              </div>
+
+              <div class="space-y-3">
+                <button onclick="openMotoEditor('${id}')" class="w-full bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white font-semibold py-2.5 sm:py-3 rounded-xl transition-all glow-effect text-sm sm:text-base">
+                  ✏️ Editar Informações
+                </button>
+                <button onclick="openPhotoManager('${id}')" class="w-full bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-600 hover:to-blue-700 text-white font-semibold py-2.5 sm:py-3 rounded-xl transition-all text-sm sm:text-base">
+                  🖼️ Gerenciar Galeria
+                </button>
+                <button onclick="openThumbnailManager('${id}')" class="w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-semibold py-2.5 sm:py-3 rounded-xl transition-all text-sm sm:text-base">
+                  📸 Definir Miniatura
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+      });
+      
+      adminPanel.innerHTML = `
+        <div class="h-screen p-4 sm:p-8" style="overflow-y: scroll;">
+          <div class="max-w-7xl mx-auto mb-6 sm:mb-8">
+            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <div>
+                <h1 class="font-display text-3xl sm:text-4xl lg:text-5xl text-sky-400 mb-2">PAINEL ADMINISTRATIVO</h1>
+                <p class="text-white/60 text-sm sm:text-base lg:text-lg">Gerenciamento completo das 30 motos</p>
+              </div>
+              <div class="flex flex-col sm:flex-row gap-3">
+                <button onclick="openAdminInNewTab(event)" class="w-full sm:w-auto bg-purple-500/20 hover:bg-purple-500/30 backdrop-blur-md text-purple-300 px-4 sm:px-6 py-3 rounded-xl flex items-center justify-center gap-2 transition-all border border-purple-500/30 hover:scale-105 text-sm sm:text-base">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                  </svg>
+                  Abrir em Nova Aba
+                </button>
+                <button onclick="closeAdminPanel()" class="w-full sm:w-auto bg-white/10 hover:bg-white/20 backdrop-blur-md text-white px-4 sm:px-6 py-3 rounded-xl flex items-center justify-center gap-2 transition-all border border-white/20 hover:scale-105 text-sm sm:text-base">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                  </svg>
+                  Sair do Painel
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="max-w-7xl mx-auto">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+              ${adminCardsHTML}
+            </div>
+          </div>
+        </div>
+
+        <!-- Modal de Edição de Informações -->
+        <div id="motoEditorModal" class="hidden fixed inset-0 bg-black/90 backdrop-blur-sm z-[110] p-4 sm:p-8" style="overflow-y: scroll;">
+          <!-- Será preenchido dinamicamente -->
+        </div>
+
+        <!-- Modal de Gerenciamento de Fotos -->
+        <div id="photoManagerModal" class="hidden fixed inset-0 bg-black/90 backdrop-blur-sm z-[110] p-4 sm:p-8" style="overflow-y: scroll;">
+          <!-- Será preenchido dinamicamente -->
+        </div>
+
+        <!-- Modal de Miniatura -->
+        <div id="thumbnailManagerModal" class="hidden fixed inset-0 bg-black/90 backdrop-blur-sm z-[110] p-4 sm:p-8" style="overflow-y: scroll;">
+          <!-- Será preenchido dinamicamente -->
+        </div>
+      `;
+      
+      adminPanel.classList.remove('hidden');
+    }
+
+    function closeAdminPanel() {
+      document.getElementById('adminPanel').classList.add('hidden');
+      // Atualizar cards APENAS ao fechar o painel admin
+      renderMotoCards();
+      showPage(currentPage);
+    }
+
+    // NOVO: Editor de informações da moto
+    let currentEditingMotoId = null;
+
+    function openMotoEditor(motoId) {
+      currentEditingMotoId = motoId;
+      const moto = getMotoData(motoId);
+      
+      const modal = document.getElementById('motoEditorModal');
+      modal.innerHTML = `
+        <div class="max-w-4xl mx-auto py-8">
+          <div class="card-gradient backdrop-blur-sm rounded-3xl border border-white/10 p-6 sm:p-8">
+            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 sm:mb-8 gap-4">
+              <div>
+                <h2 class="font-display text-3xl sm:text-4xl text-purple-400 mb-2">EDITAR INFORMAÇÕES</h2>
+                <p class="text-white/60 text-sm sm:text-base">${moto.brand} ${moto.name}</p>
+              </div>
+              <button onclick="closeMotoEditor()" class="w-full sm:w-auto bg-white/10 hover:bg-white/20 text-white px-4 sm:px-6 py-3 rounded-xl transition-all text-sm sm:text-base">
+                Fechar
+              </button>
+            </div>
+
+            <form id="motoEditForm" class="space-y-4 sm:space-y-6">
+              <div class="grid md:grid-cols-2 gap-4 sm:gap-6">
+                <div>
+                  <label class="block text-white/80 text-sm font-medium mb-2">Nome da Moto</label>
+                  <input type="text" id="edit_name" value="${moto.name}" class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white focus:outline-none focus:border-purple-400 text-sm sm:text-base" required>
+                </div>
+                <div>
+                  <label class="block text-white/80 text-sm font-medium mb-2">Marca</label>
+                  <input type="text" id="edit_brand" value="${moto.brand}" class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white focus:outline-none focus:border-purple-400 text-sm sm:text-base" required>
+                </div>
+              </div>
+
+              <div class="grid md:grid-cols-2 gap-4 sm:gap-6">
+                <div>
+                  <label class="block text-white/80 text-sm font-medium mb-2">Ano</label>
+                  <input type="text" id="edit_year" value="${moto.year}" class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white focus:outline-none focus:border-purple-400 text-sm sm:text-base" required>
+                </div>
+                <div>
+                  <label class="block text-white/80 text-sm font-medium mb-2">Preço</label>
+                  <input type="text" id="edit_price" value="${moto.price}" class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white focus:outline-none focus:border-purple-400 text-sm sm:text-base" required>
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-white/80 text-sm font-medium mb-2">Badge (opcional)</label>
+                <input type="text" id="edit_badge" value="${moto.badge || ''}" placeholder="Ex: NOVO, DESTAQUE, PROMOÇÃO" class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-white/40 focus:outline-none focus:border-purple-400 text-sm sm:text-base">
+              </div>
+
+              <div>
+                <label class="block text-white/80 text-sm font-medium mb-2">Descrição</label>
+                <textarea id="edit_description" rows="3" class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white focus:outline-none focus:border-purple-400 resize-none text-sm sm:text-base" required>${moto.description}</textarea>
+              </div>
+
+              <div class="bg-white/5 rounded-2xl p-4 sm:p-6">
+                <h3 class="font-semibold text-base sm:text-lg mb-4 text-purple-400">Especificações Técnicas</h3>
+                <div class="space-y-4">
+                  <div>
+                    <label class="block text-white/80 text-sm font-medium mb-2">Motor</label>
+                    <input type="text" id="edit_motor" value="${moto.specs.motor}" class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white focus:outline-none focus:border-purple-400 text-sm sm:text-base" required>
+                  </div>
+                  <div>
+                    <label class="block text-white/80 text-sm font-medium mb-2">Potência</label>
+                    <input type="text" id="edit_potencia" value="${moto.specs.potencia}" class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white focus:outline-none focus:border-purple-400 text-sm sm:text-base" required>
+                  </div>
+                  <div>
+                    <label class="block text-white/80 text-sm font-medium mb-2">Torque</label>
+                    <input type="text" id="edit_torque" value="${moto.specs.torque}" class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white focus:outline-none focus:border-purple-400 text-sm sm:text-base" required>
+                  </div>
+                </div>
+              </div>
+
+              <div class="bg-white/5 rounded-2xl p-4 sm:p-6">
+                <h3 class="font-semibold text-base sm:text-lg mb-4 text-purple-400">Destaques (um por linha)</h3>
+                <textarea id="edit_features" rows="5" class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white focus:outline-none focus:border-purple-400 resize-none text-sm sm:text-base" required>${moto.features.join('\n')}</textarea>
+                <p class="text-white/40 text-xs sm:text-sm mt-2">💡 Digite cada destaque em uma linha separada</p>
+              </div>
+
+              <div class="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-4 sm:pt-6">
+                <button type="button" onclick="closeMotoEditor()" class="flex-1 px-4 sm:px-6 py-3 sm:py-4 bg-white/5 hover:bg-white/10 rounded-xl font-semibold transition-all text-sm sm:text-base">
+                  Cancelar
+                </button>
+                <button type="submit" class="flex-1 px-4 sm:px-6 py-3 sm:py-4 bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 rounded-xl font-semibold transition-all glow-effect text-sm sm:text-base">
+                  💾 Salvar Alterações
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      `;
+      
+      modal.classList.remove('hidden');
+      
+      document.getElementById('motoEditForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        saveMotoData();
+      });
+    }
+
+    function closeMotoEditor() {
+      document.getElementById('motoEditorModal').classList.add('hidden');
+      currentEditingMotoId = null;
+      // NÃO recarregar o painel - mantém o estado atual
+    }
+
+    async function saveMotoData() {
+      const features = document.getElementById('edit_features').value.split('\n').filter(f => f.trim() !== '');
+      
+      const motoData = {
+        name: document.getElementById('edit_name').value,
+        brand: document.getElementById('edit_brand').value,
+        year: document.getElementById('edit_year').value,
+        price: document.getElementById('edit_price').value,
+        badge: document.getElementById('edit_badge').value || undefined,
+        description: document.getElementById('edit_description').value,
+        specs: {
+          motor: document.getElementById('edit_motor').value,
+          potencia: document.getElementById('edit_potencia').value,
+          torque: document.getElementById('edit_torque').value
+        },
+        features: features
+      };
+      
+      motoDataStorage[currentEditingMotoId] = motoData;
+      
+      // Salvar no banco de dados
+      await saveToSDK(currentEditingMotoId, 'moto_data', motoData);
+      
+      showToast('✅ Informações salvas com sucesso!', 'success');
+      closeMotoEditor();
+      // NÃO recarregar painel - evita sumir o layout
+    }
+
+    // Sistema de gerenciamento de GALERIA de fotos
+    let currentMotoId = null;
+
+    function openPhotoManager(motoId) {
+      currentMotoId = motoId;
+      const moto = getMotoData(motoId);
+      
+      const modal = document.getElementById('photoManagerModal');
+      modal.innerHTML = `
+        <div class="max-w-5xl mx-auto py-8">
+          <div class="card-gradient backdrop-blur-sm rounded-3xl border border-white/10 p-6 sm:p-8">
+            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 sm:mb-8 gap-4">
+              <div>
+                <h2 class="font-display text-3xl sm:text-4xl text-sky-400 mb-2">GALERIA DE FOTOS</h2>
+                <p class="text-white/60 text-sm sm:text-base">${moto.brand} ${moto.name}</p>
+              </div>
+              <button onclick="closePhotoManager()" class="w-full sm:w-auto bg-white/10 hover:bg-white/20 text-white px-4 sm:px-6 py-3 rounded-xl transition-all text-sm sm:text-base">
+                Fechar
+              </button>
+            </div>
+
+            <div class="mb-6 sm:mb-8 bg-white/5 rounded-2xl p-4 sm:p-6">
+              <h3 class="font-semibold text-base sm:text-lg mb-4 text-sky-400">Adicionar Nova Foto</h3>
+              
+              <div class="mb-4 sm:mb-6">
+                <label class="block text-white/80 text-sm font-medium mb-3">📁 Upload do Computador (Múltiplas Fotos)</label>
+                <div class="flex flex-col sm:flex-row gap-3 sm:gap-4">
+                  <input 
+                    type="file" 
+                    id="photoFileInput" 
+                    accept="image/*"
+                    multiple
+                    class="flex-1 px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-sky-500 file:text-white hover:file:bg-sky-600 file:cursor-pointer focus:outline-none focus:border-sky-400 text-sm"
+                  />
+                  <button onclick="addPhotoFromFile()" class="w-full sm:w-auto bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-600 hover:to-blue-700 text-white font-semibold px-6 sm:px-8 py-3 rounded-xl transition-all glow-effect whitespace-nowrap text-sm sm:text-base">
+                    Upload
+                  </button>
+                </div>
+                <p class="text-white/40 text-xs mt-2">💡 Você pode selecionar várias fotos de uma vez!</p>
+              </div>
+
+              <div class="relative my-4 sm:my-6">
+                <div class="absolute inset-0 flex items-center">
+                  <div class="w-full border-t border-white/10"></div>
+                </div>
+                <div class="relative flex justify-center text-sm">
+                  <span class="px-4 bg-white/5 text-white/60 rounded-full">OU</span>
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-white/80 text-sm font-medium mb-3">🔗 URL da Imagem</label>
+                <div class="flex flex-col sm:flex-row gap-3 sm:gap-4">
+                  <input 
+                    type="url" 
+                    id="photoUrlInput" 
+                    placeholder="Cole a URL da foto aqui (https://...)" 
+                    class="flex-1 px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-white/40 focus:outline-none focus:border-sky-400 text-sm"
+                  />
+                  <button onclick="addPhotoFromUrl()" class="w-full sm:w-auto bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-600 hover:to-blue-700 text-white font-semibold px-6 sm:px-8 py-3 rounded-xl transition-all glow-effect whitespace-nowrap text-sm sm:text-base">
+                    Adicionar
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <h3 class="font-semibold text-base sm:text-lg mb-4 text-sky-400">Fotos da Galeria</h3>
+              <div class="mb-3 p-3 sm:p-4 bg-sky-500/10 border border-sky-500/30 rounded-xl">
+                <p class="text-sky-400 text-xs sm:text-sm flex items-center gap-2">
+                  <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"/>
+                  </svg>
+                  <strong>Arraste e solte</strong> as fotos para reorganizar a ordem da galeria
+                </p>
+              </div>
+              <div id="photosList" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div class="text-center py-12 text-white/40 col-span-full text-sm">
+                  Nenhuma foto adicionada ainda
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+      
+      modal.classList.remove('hidden');
+      renderPhotosList();
+    }
+
+    function closePhotoManager() {
+      document.getElementById('photoManagerModal').classList.add('hidden');
+      document.getElementById('photoUrlInput').value = '';
+      document.getElementById('photoFileInput').value = '';
+      currentMotoId = null;
+    }
+
+    async function addPhotoFromFile() {
+      const fileInput = document.getElementById('photoFileInput');
+      const files = fileInput.files;
+      
+      if (!files || files.length === 0) {
+        showToast('Por favor, selecione pelo menos um arquivo', 'error');
+        return;
+      }
+
+      // Verificar se todos os arquivos são imagens
+      for (let i = 0; i < files.length; i++) {
+        if (!files[i].type.startsWith('image/')) {
+          showToast('Por favor, selecione apenas arquivos de imagem', 'error');
+          return;
+        }
+      }
+
+      if (!photosStorage[currentMotoId]) {
+        photosStorage[currentMotoId] = [];
+      }
+
+      let processedCount = 0;
+      const totalFiles = files.length;
+
+      // Processar cada arquivo
+      Array.from(files).forEach((file) => {
+        const reader = new FileReader();
+        reader.onload = async function(e) {
+          const dataUrl = e.target.result;
+          
+          photosStorage[currentMotoId].push({
+            id: Date.now() + Math.random(),
+            url: dataUrl,
+            type: 'local'
+          });
+
+          processedCount++;
+          
+          // Quando todas as fotos forem processadas
+          if (processedCount === totalFiles) {
+            fileInput.value = '';
+            
+            // Salvar no banco de dados
+            await saveToSDK(currentMotoId, 'photos', photosStorage[currentMotoId]);
+            
+            // Atualizar APENAS a lista de fotos, não o layout inteiro
+            renderPhotosList();
+            updateAdminPanelCounters();
+            showToast(`✅ ${totalFiles} foto${totalFiles > 1 ? 's adicionadas' : ' adicionada'} com sucesso!`, 'success');
+          }
+        };
+        
+        reader.readAsDataURL(file);
+      });
+    }
+
+    async function addPhotoFromUrl() {
+      const urlInput = document.getElementById('photoUrlInput');
+      const url = urlInput.value.trim();
+      
+      if (!url) {
+        showToast('Por favor, insira uma URL válida', 'error');
+        return;
+      }
+
+      if (!url.startsWith('http://') && !url.startsWith('https://')) {
+        showToast('A URL deve começar com http:// ou https://', 'error');
+        return;
+      }
+
+      if (!photosStorage[currentMotoId]) {
+        photosStorage[currentMotoId] = [];
+      }
+
+      photosStorage[currentMotoId].push({
+        id: Date.now(),
+        url: url,
+        type: 'url'
+      });
+
+      urlInput.value = '';
+      
+      // Salvar no banco de dados
+      await saveToSDK(currentMotoId, 'photos', photosStorage[currentMotoId]);
+      
+      renderPhotosList();
+      updateAdminPanelCounters();
+      showToast('Foto adicionada com sucesso!', 'success');
+    }
+
+    async function removePhoto(photoId) {
+      if (!photosStorage[currentMotoId]) return;
+      
+      photosStorage[currentMotoId] = photosStorage[currentMotoId].filter(p => p.id !== photoId);
+      
+      // Salvar no banco de dados
+      await saveToSDK(currentMotoId, 'photos', photosStorage[currentMotoId]);
+      
+      renderPhotosList();
+      updateAdminPanelCounters();
+      showToast('Foto removida com sucesso!', 'success');
+    }
+
+    // Sistema de Drag and Drop para reordenar fotos
+    let draggedElement = null;
+    let draggedIndex = null;
+
+    function setupDragAndDrop() {
+      const photoItems = document.querySelectorAll('.photo-item');
+      
+      photoItems.forEach(item => {
+        item.addEventListener('dragstart', handleDragStart);
+        item.addEventListener('dragover', handleDragOver);
+        item.addEventListener('drop', handleDrop);
+        item.addEventListener('dragend', handleDragEnd);
+        item.addEventListener('dragenter', handleDragEnter);
+        item.addEventListener('dragleave', handleDragLeave);
+      });
+    }
+
+    function handleDragStart(e) {
+      draggedElement = this;
+      draggedIndex = parseInt(this.dataset.photoIndex);
+      
+      this.style.opacity = '0.4';
+      e.dataTransfer.effectAllowed = 'move';
+    }
+
+    function handleDragOver(e) {
+      if (e.preventDefault) {
+        e.preventDefault();
+      }
+      e.dataTransfer.dropEffect = 'move';
+      return false;
+    }
+
+    function handleDragEnter(e) {
+      if (this !== draggedElement) {
+        this.classList.add('border-sky-400', 'bg-sky-500/10');
+      }
+    }
+
+    function handleDragLeave(e) {
+      this.classList.remove('border-sky-400', 'bg-sky-500/10');
+    }
+
+    async function handleDrop(e) {
+      if (e.stopPropagation) {
+        e.stopPropagation();
+      }
+      
+      this.classList.remove('border-sky-400', 'bg-sky-500/10');
+      
+      if (draggedElement !== this) {
+        const dropIndex = parseInt(this.dataset.photoIndex);
+        
+        // Reordenar array de fotos
+        const photos = photosStorage[currentMotoId];
+        const draggedPhoto = photos[draggedIndex];
+        
+        // Remove da posição antiga
+        photos.splice(draggedIndex, 1);
+        
+        // Insere na nova posição
+        photos.splice(dropIndex, 0, draggedPhoto);
+        
+        // Salvar nova ordem no banco de dados
+        await saveToSDK(currentMotoId, 'photos', photos);
+        
+        // Renderizar novamente
+        renderPhotosList();
+        updateAdminPanelCounters();
+        showToast('✅ Ordem das fotos atualizada!', 'success');
+      }
+      
+      return false;
+    }
+
+    function handleDragEnd(e) {
+      this.style.opacity = '1';
+      
+      // Remove estilos de drag de todos os items
+      document.querySelectorAll('.photo-item').forEach(item => {
+        item.classList.remove('border-sky-400', 'bg-sky-500/10');
+      });
+    }
+
+    function renderPhotosList() {
+      const photosList = document.getElementById('photosList');
+      const photos = photosStorage[currentMotoId] || [];
+      
+      if (photos.length === 0) {
+        photosList.innerHTML = `
+          <div class="text-center py-12 text-white/40 col-span-full text-sm">
+            Nenhuma foto adicionada ainda
+          </div>
+        `;
+        return;
+      }
+
+      photosList.innerHTML = photos.map((photo, index) => `
+        <div class="photo-item bg-white/5 rounded-xl p-3 sm:p-4 border border-white/10 hover:border-sky-500/50 transition-all cursor-move" 
+             draggable="true" 
+             data-photo-id="${photo.id}"
+             data-photo-index="${index}">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-xs px-2 py-1 rounded ${photo.type === 'local' ? 'bg-blue-500/20 text-blue-400' : 'bg-green-500/20 text-green-400'}">
+              ${photo.type === 'local' ? '📁 Local' : '🔗 URL'}
+            </span>
+            <div class="flex items-center gap-1 text-white/40 text-xs">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8h16M4 16h16"/>
+              </svg>
+              <span>${index + 1}</span>
+            </div>
+          </div>
+          <img src="${photo.url}" alt="Foto da moto" loading="lazy" class="w-full h-40 sm:h-48 object-cover rounded-lg mb-3 pointer-events-none" onerror="this.src=''; this.alt='Erro ao carregar imagem'; this.classList.add('hidden');">
+          <div class="flex items-center gap-2">
+            ${photo.type === 'url' ? `<input type="text" value="${photo.url}" readonly class="flex-1 px-2 sm:px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-white text-xs truncate pointer-events-none">` : '<div class="flex-1 text-white/60 text-xs px-2 sm:px-3 py-2">Arquivo local</div>'}
+            <button onclick="removePhoto(${photo.id})" class="bg-red-500/20 hover:bg-red-500/30 text-red-400 px-3 sm:px-4 py-2 rounded-lg transition-all flex-shrink-0">
+              <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+      `).join('');
+      
+      // Adicionar event listeners para drag and drop
+      setupDragAndDrop();
+    }
+
+    // NOVO: Sistema de gerenciamento de MINIATURA
+    let currentThumbnailMotoId = null;
+
+    function openThumbnailManager(motoId) {
+      currentThumbnailMotoId = motoId;
+      const moto = getMotoData(motoId);
+      const currentThumbnail = thumbnailStorage[motoId];
+      
+      const modal = document.getElementById('thumbnailManagerModal');
+      modal.innerHTML = `
+        <div class="max-w-3xl mx-auto py-8">
+          <div class="card-gradient backdrop-blur-sm rounded-3xl border border-white/10 p-6 sm:p-8">
+            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 sm:mb-8 gap-4">
+              <div>
+                <h2 class="font-display text-3xl sm:text-4xl text-green-400 mb-2">MINIATURA DO CARD</h2>
+                <p class="text-white/60 text-sm sm:text-base">${moto.brand} ${moto.name}</p>
+              </div>
+              <button onclick="closeThumbnailManager()" class="w-full sm:w-auto bg-white/10 hover:bg-white/20 text-white px-4 sm:px-6 py-3 rounded-xl transition-all text-sm sm:text-base">
+                Fechar
+              </button>
+            </div>
+
+            ${currentThumbnail ? `
+              <div class="mb-6 sm:mb-8 bg-white/5 rounded-2xl p-4 sm:p-6">
+                <h3 class="font-semibold text-base sm:text-lg mb-4 text-green-400">Miniatura Atual</h3>
+                <img src="${currentThumbnail}" alt="Miniatura atual" class="w-full h-48 sm:h-64 object-cover rounded-xl mb-4">
+                <button onclick="removeThumbnail()" class="w-full bg-red-500/20 hover:bg-red-500/30 text-red-400 font-semibold py-3 rounded-xl transition-all text-sm sm:text-base">
+                  🗑️ Remover Miniatura
+                </button>
+              </div>
+            ` : ''}
+
+            <div class="bg-white/5 rounded-2xl p-4 sm:p-6">
+              <h3 class="font-semibold text-base sm:text-lg mb-4 text-green-400">Adicionar/Alterar Miniatura</h3>
+              
+              <div class="mb-4 sm:mb-6">
+                <label class="block text-white/80 text-sm font-medium mb-3">📁 Upload do Computador</label>
+                <div class="flex flex-col sm:flex-row gap-3 sm:gap-4">
+                  <input 
+                    type="file" 
+                    id="thumbnailFileInput" 
+                    accept="image/*"
+                    class="flex-1 px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-green-500 file:text-white hover:file:bg-green-600 file:cursor-pointer focus:outline-none focus:border-green-400 text-sm"
+                  />
+                  <button onclick="addThumbnailFromFile()" class="w-full sm:w-auto bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-semibold px-6 sm:px-8 py-3 rounded-xl transition-all glow-effect whitespace-nowrap text-sm sm:text-base">
+                    Upload
+                  </button>
+                </div>
+              </div>
+
+              <div class="relative my-4 sm:my-6">
+                <div class="absolute inset-0 flex items-center">
+                  <div class="w-full border-t border-white/10"></div>
+                </div>
+                <div class="relative flex justify-center text-sm">
+                  <span class="px-4 bg-white/5 text-white/60 rounded-full">OU</span>
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-white/80 text-sm font-medium mb-3">🔗 URL da Imagem</label>
+                <div class="flex flex-col sm:flex-row gap-3 sm:gap-4">
+                  <input 
+                    type="url" 
+                    id="thumbnailUrlInput" 
+                    placeholder="Cole a URL da miniatura aqui (https://...)" 
+                    class="flex-1 px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-white/40 focus:outline-none focus:border-green-400 text-sm"
+                  />
+                  <button onclick="addThumbnailFromUrl()" class="w-full sm:w-auto bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-semibold px-6 sm:px-8 py-3 rounded-xl transition-all glow-effect whitespace-nowrap text-sm sm:text-base">
+                    Definir
+                  </button>
+                </div>
+              </div>
+
+              <div class="mt-4 sm:mt-6 p-3 sm:p-4 bg-blue-500/10 border border-blue-500/30 rounded-xl">
+                <p class="text-blue-400 text-xs sm:text-sm">
+                  💡 <strong>Dica:</strong> A miniatura aparecerá nos cards principais da página. Use uma imagem que represente bem a moto!
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+      
+      modal.classList.remove('hidden');
+    }
+
+    function closeThumbnailManager() {
+      document.getElementById('thumbnailManagerModal').classList.add('hidden');
+      document.getElementById('thumbnailUrlInput').value = '';
+      document.getElementById('thumbnailFileInput').value = '';
+      currentThumbnailMotoId = null;
+      // NÃO recarregar painel - evita sumir o layout
+    }
+
+    async function addThumbnailFromFile() {
+      const fileInput = document.getElementById('thumbnailFileInput');
+      const file = fileInput.files[0];
+      
+      if (!file) {
+        showToast('Por favor, selecione um arquivo', 'error');
+        return;
+      }
+
+      if (!file.type.startsWith('image/')) {
+        showToast('Por favor, selecione apenas arquivos de imagem', 'error');
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = async function(e) {
+        thumbnailStorage[currentThumbnailMotoId] = e.target.result;
+        fileInput.value = '';
+        
+        // Salvar no banco de dados
+        await saveToSDK(currentThumbnailMotoId, 'thumbnail', e.target.result);
+        
+        updateAdminPanelCounters();
+        showToast('✅ Miniatura definida com sucesso!', 'success');
+        closeThumbnailManager();
+      };
+      
+      reader.readAsDataURL(file);
+    }
+
+    async function addThumbnailFromUrl() {
+      const urlInput = document.getElementById('thumbnailUrlInput');
+      const url = urlInput.value.trim();
+      
+      if (!url) {
+        showToast('Por favor, insira uma URL válida', 'error');
+        return;
+      }
+
+      if (!url.startsWith('http://') && !url.startsWith('https://')) {
+        showToast('A URL deve começar com http:// ou https://', 'error');
+        return;
+      }
+
+      thumbnailStorage[currentThumbnailMotoId] = url;
+      urlInput.value = '';
+      
+      // Salvar no banco de dados
+      await saveToSDK(currentThumbnailMotoId, 'thumbnail', url);
+      
+      updateAdminPanelCounters();
+      showToast('✅ Miniatura definida com sucesso!', 'success');
+      closeThumbnailManager();
+    }
+
+    async function removeThumbnail() {
+      delete thumbnailStorage[currentThumbnailMotoId];
+      
+      // Remover do banco de dados
+      const existing = currentData.find(r => r.moto_id === currentThumbnailMotoId && r.data_type === 'thumbnail');
+      if (existing) {
+        await window.dataSdk.delete(existing);
+      }
+      
+      updateAdminPanelCounters();
+      showToast('Miniatura removida com sucesso!', 'success');
+      closeThumbnailManager();
+    }
+
+    function showToast(message, type = 'success') {
+      const toast = document.createElement('div');
+      toast.className = `fixed bottom-4 sm:bottom-8 right-4 sm:right-8 z-[120] px-4 sm:px-6 py-3 sm:py-4 rounded-xl font-semibold shadow-2xl animate-fade-in-up text-sm sm:text-base ${
+        type === 'success' ? 'bg-green-500 text-white' : 'bg-red-500 text-white'
+      }`;
+      toast.textContent = message;
+      document.body.appendChild(toast);
+      
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateY(20px)';
+        setTimeout(() => toast.remove(), 300);
+      }, 3000);
+    }
+
+    // Função para atualizar os contadores no painel administrativo
+    function updateAdminPanelCounters() {
+      Object.entries(motosDatabase).forEach(([id]) => {
+        const photosCount = photosStorage[id] ? photosStorage[id].length : 0;
+        const hasThumbnail = thumbnailStorage[id] ? '✓' : '✗';
+        
+        // Atualizar contador de galeria
+        const galleryCounter = document.querySelector(`[data-moto-id="${id}"] .gallery-counter`);
+        if (galleryCounter) {
+          galleryCounter.textContent = photosCount;
+        }
+        
+        // Atualizar indicador de miniatura
+        const thumbnailIndicator = document.querySelector(`[data-moto-id="${id}"] .thumbnail-indicator`);
+        if (thumbnailIndicator) {
+          thumbnailIndicator.textContent = hasThumbnail;
+          thumbnailIndicator.className = `thumbnail-indicator font-display text-2xl sm:text-3xl ${hasThumbnail === '✓' ? 'text-green-400' : 'text-red-400'}`;
+        }
+      });
+    }
+
+    // Mostrar detalhes da moto
+    function showMotoDetail(motoId) {
+      const moto = getMotoData(motoId);
+      if (!moto) return;
+
+      const photos = photosStorage[motoId] || [];
+      
+      // Inicializar sistema de fotos
+      currentMotoPhotos = photos;
+      currentPhotoIndex = 0;
+      
+      let photosHTML = '';
+      
+      if (photos.length > 0) {
+        photosHTML = `
+          <div class="mb-12 sm:mb-16">
+            <h2 class="font-display text-3xl sm:text-4xl text-center mb-6 sm:mb-8 text-sky-400">GALERIA DE FOTOS</h2>
+            
+            <!-- Foto Principal Grande -->
+            <div class="card-gradient backdrop-blur-sm rounded-3xl border border-white/10 p-4 sm:p-6 mb-6 sm:mb-8">
+              <div class="relative flex items-center justify-center" style="min-height: 400px;">
+                <img id="mainPhoto" src="${photos[0].url}" alt="Foto da ${moto.brand} ${moto.name}" 
+                     class="max-w-full max-h-[400px] sm:max-h-[500px] lg:max-h-[700px] object-contain rounded-2xl mx-auto" 
+                     onerror="this.src=''; this.alt='Erro ao carregar imagem';">
+                
+                ${photos.length > 1 ? `
+                  <!-- Setas de Navegação -->
+                  <button onclick="navigatePhoto(-1)" class="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 bg-black/60 hover:bg-black/80 backdrop-blur-sm text-white p-2 sm:p-4 rounded-full transition-all hover:scale-110 z-10">
+                    <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                    </svg>
+                  </button>
+                  <button onclick="navigatePhoto(1)" class="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 bg-black/60 hover:bg-black/80 backdrop-blur-sm text-white p-2 sm:p-4 rounded-full transition-all hover:scale-110 z-10">
+                    <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                    </svg>
+                  </button>
+                ` : ''}
+                
+                <!-- Contador de Fotos -->
+                <div class="absolute bottom-3 sm:bottom-4 right-3 sm:right-4 bg-black/60 backdrop-blur-sm text-white px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-semibold">
+                  <span id="photoCounter">1</span> / ${photos.length}
+                </div>
+              </div>
+            </div>
+
+            <!-- Miniaturas -->
+            <div class="flex gap-3 sm:gap-4 overflow-x-auto pb-4 px-2" style="scroll-behavior: smooth; -webkit-overflow-scrolling: touch;">
+              ${photos.map((photo, index) => `
+                <div onclick="selectPhoto(${index})" 
+                     class="photo-thumbnail flex-shrink-0 cursor-pointer rounded-xl overflow-hidden border-3 transition-all duration-300 hover:scale-105 ${index === 0 ? 'border-sky-400 ring-2 ring-sky-400' : 'border-white/20 hover:border-sky-400/50'}" 
+                     data-photo-index="${index}">
+                  <img src="${photo.url}" alt="Miniatura ${index + 1}" 
+                       class="w-20 h-20 sm:w-24 sm:h-24 lg:w-32 lg:h-32 object-cover" 
+                       onerror="this.parentElement.style.display='none';">
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        `;
+      }
+
+      const detailHTML = `
+        <div id="moto-detail-page" class="fixed inset-0 bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 z-50 detail-page-enter" style="overflow-y: scroll;">
+          
+          <button onclick="closeMotoDetail()" class="fixed top-4 left-4 sm:top-6 sm:left-6 z-50 bg-white/10 hover:bg-white/20 backdrop-blur-md text-white px-4 sm:px-6 py-2.5 sm:py-3 rounded-full flex items-center gap-2 transition-all border border-white/20 hover:scale-105 text-sm sm:text-base">
+            <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+            </svg>
+            <span class="font-semibold">Voltar</span>
+          </button>
+
+          <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-24">
+            
+            <div class="text-center mb-12 sm:mb-16 animate-fade-in-up">
+              ${moto.badge ? `<span class="inline-block bg-gradient-to-r from-sky-500 to-blue-600 text-white text-xs sm:text-sm font-bold px-4 sm:px-6 py-2 rounded-full mb-4 sm:mb-6 shadow-lg">${moto.badge}</span>` : ''}
+              <div class="text-sky-400 text-base sm:text-lg lg:text-xl font-semibold mb-2 sm:mb-3 tracking-wide">${moto.brand}</div>
+              <h1 class="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl mb-4 sm:mb-6 bg-gradient-to-r from-white to-sky-300 bg-clip-text text-transparent leading-tight">
+                ${moto.name}
+              </h1>
+              <p class="text-base sm:text-lg md:text-xl lg:text-2xl text-white/70 max-w-4xl mx-auto mb-6 sm:mb-8 leading-relaxed px-4">
+                ${moto.description}
+              </p>
+              <div class="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-transparent bg-gradient-to-r from-sky-400 to-blue-500 bg-clip-text">
+                ${moto.price}
+              </div>
+            </div>
+
+            ${photosHTML}
+
+            <div class="grid md:grid-cols-2 gap-6 sm:gap-8 mb-12 sm:mb-16">
+              <div class="card-gradient backdrop-blur-sm rounded-3xl border border-white/10 p-6 sm:p-8 hover:border-sky-500/50 transition-all duration-500">
+                <div class="flex items-center gap-3 sm:gap-4 mb-4 sm:mb-6">
+                  <div class="w-12 h-12 sm:w-16 sm:h-16 bg-sky-500/20 rounded-2xl flex items-center justify-center">
+                    <svg class="w-6 h-6 sm:w-8 sm:h-8 text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                    </svg>
+                  </div>
+                  <h2 class="font-display text-2xl sm:text-3xl text-sky-400">ESPECIFICAÇÕES</h2>
+                </div>
+                <div class="space-y-4">
+                  <div class="bg-white/5 rounded-xl p-3 sm:p-4">
+                    <div class="text-white/60 text-xs sm:text-sm mb-1">Motor</div>
+                    <div class="font-semibold text-base sm:text-lg">${moto.specs.motor}</div>
+                  </div>
+                  <div class="bg-white/5 rounded-xl p-3 sm:p-4">
+                    <div class="text-white/60 text-xs sm:text-sm mb-1">Potência</div>
+                    <div class="font-semibold text-base sm:text-lg">${moto.specs.potencia}</div>
+                  </div>
+                  <div class="bg-white/5 rounded-xl p-3 sm:p-4">
+                    <div class="text-white/60 text-xs sm:text-sm mb-1">Torque</div>
+                    <div class="font-semibold text-base sm:text-lg">${moto.specs.torque}</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="card-gradient backdrop-blur-sm rounded-3xl border border-white/10 p-6 sm:p-8 hover:border-sky-500/50 transition-all duration-500">
+                <div class="flex items-center gap-3 sm:gap-4 mb-4 sm:mb-6">
+                  <div class="w-12 h-12 sm:w-16 sm:h-16 bg-sky-500/20 rounded-2xl flex items-center justify-center">
+                    <svg class="w-6 h-6 sm:w-8 sm:h-8 text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                    </svg>
+                  </div>
+                  <h2 class="font-display text-2xl sm:text-3xl text-sky-400">DESTAQUES</h2>
+                </div>
+                <div class="space-y-4">
+                  ${moto.features.map(feature => `
+                    <div class="flex items-center gap-3 bg-white/5 rounded-xl p-3 sm:p-4">
+                      <svg class="w-5 h-5 sm:w-6 sm:h-6 text-sky-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                      </svg>
+                      <span class="font-medium text-sm sm:text-base">${feature}</span>
+                    </div>
+                  `).join('')}
+                </div>
+              </div>
+            </div>
+
+            <div class="text-center card-gradient backdrop-blur-sm rounded-3xl border border-white/10 p-8 sm:p-12 hover:border-sky-500/50 transition-all duration-500">
+              <h2 class="font-display text-3xl sm:text-4xl lg:text-5xl mb-3 sm:mb-4">GOSTOU DESTA MOTO?</h2>
+              <p class="text-white/60 text-base sm:text-lg lg:text-xl mb-8 sm:mb-10 max-w-2xl mx-auto px-4">
+                Entre em contato com nossa equipe agora mesmo!
+              </p>
+              
+              <div class="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center">
+                <a href="#contato" onclick="closeMotoDetail()" 
+                   class="inline-flex items-center justify-center gap-2 sm:gap-3 bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-600 hover:to-blue-700 text-white font-bold px-8 sm:px-10 py-4 sm:py-5 rounded-full transition-all glow-effect hover:scale-105 text-base sm:text-lg shadow-xl">
+                  Falar com Consultor
+                </a>
+                
+                <a href="https://wa.me/5541996977148?text=Olá!%20Tenho%20interesse%20na%20${encodeURIComponent(moto.brand + ' ' + moto.name)}"
+                   target="_blank" 
+                   rel="noopener noreferrer" 
+                   class="inline-flex items-center justify-center gap-2 sm:gap-3 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-bold px-8 sm:px-10 py-4 sm:py-5 rounded-full transition-all hover:scale-105 text-base sm:text-lg shadow-xl">
+                  WhatsApp Direto
+                </a>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      `;
+
+      document.body.insertAdjacentHTML('beforeend', detailHTML);
+    }
+
+    function closeMotoDetail() {
+      const detailPage = document.getElementById('moto-detail-page');
+      if (detailPage) {
+        detailPage.style.opacity = '0';
+        detailPage.style.transform = 'translateX(100%)';
+        setTimeout(() => {
+          detailPage.remove();
+        }, 300);
+      }
+    }
+
+    // Sistema de navegação de fotos na galeria
+    let currentPhotoIndex = 0;
+    let currentMotoPhotos = [];
+
+    function selectPhoto(index) {
+      currentPhotoIndex = index;
+      updateMainPhoto();
+    }
+
+    function navigatePhoto(direction) {
+      currentPhotoIndex += direction;
+      
+      // Loop circular
+      if (currentPhotoIndex < 0) {
+        currentPhotoIndex = currentMotoPhotos.length - 1;
+      } else if (currentPhotoIndex >= currentMotoPhotos.length) {
+        currentPhotoIndex = 0;
+      }
+      
+      updateMainPhoto();
+    }
+
+    function updateMainPhoto() {
+      const mainPhoto = document.getElementById('mainPhoto');
+      const photoCounter = document.getElementById('photoCounter');
+      
+      if (mainPhoto && currentMotoPhotos[currentPhotoIndex]) {
+        // Animação suave de fade
+        mainPhoto.style.opacity = '0';
+        
+        setTimeout(() => {
+          mainPhoto.src = currentMotoPhotos[currentPhotoIndex].url;
+          mainPhoto.style.opacity = '1';
+        }, 200);
+        
+        // Atualizar contador
+        if (photoCounter) {
+          photoCounter.textContent = currentPhotoIndex + 1;
+        }
+        
+        // Atualizar borda das miniaturas
+        document.querySelectorAll('.photo-thumbnail').forEach((thumb, index) => {
+          if (index === currentPhotoIndex) {
+            thumb.classList.remove('border-white/20', 'hover:border-sky-400/50');
+            thumb.classList.add('border-sky-400', 'ring-2', 'ring-sky-400');
+          } else {
+            thumb.classList.remove('border-sky-400', 'ring-2', 'ring-sky-400');
+            thumb.classList.add('border-white/20', 'hover:border-sky-400/50');
+          }
+        });
+        
+        // Scroll suave apenas horizontal das miniaturas, sem afetar a página
+        const activeThumbnail = document.querySelector(`.photo-thumbnail[data-photo-index="${currentPhotoIndex}"]`);
+        if (activeThumbnail && activeThumbnail.parentElement) {
+          const container = activeThumbnail.parentElement;
+          const thumbLeft = activeThumbnail.offsetLeft;
+          const thumbWidth = activeThumbnail.offsetWidth;
+          const containerWidth = container.offsetWidth;
+          const scrollLeft = thumbLeft - (containerWidth / 2) + (thumbWidth / 2);
+          
+          container.scrollTo({ left: scrollLeft, behavior: 'smooth' });
+        }
+      }
+    }
+
+    // Paginação e busca
+    let currentPage = 0;
+    const motosPerPage = 9;
+    let isSearching = false;
+
+    function searchMotos(searchTerm) {
+      const term = searchTerm.toLowerCase().trim();
+      const allMotoCards = document.querySelectorAll('.moto-card');
+      
+      if (term === '') {
+        isSearching = false;
+        currentPage = 0;
+        showPage(0);
+        document.getElementById('noResultsMessage').classList.add('hidden');
+        document.getElementById('motos-grid').classList.remove('hidden');
+        return;
+      }
+
+      isSearching = true;
+      let foundCount = 0;
+
+      document.getElementById('loadMoreBtn').style.opacity = '0';
+      document.getElementById('loadMoreBtn').style.pointerEvents = 'none';
+      document.getElementById('loadPrevBtn').style.opacity = '0';
+      document.getElementById('loadPrevBtn').style.pointerEvents = 'none';
+
+      allMotoCards.forEach((card) => {
+        const motoName = card.querySelector('h3').textContent.toLowerCase();
+        const motoBrand = card.querySelector('.text-sky-400').textContent.toLowerCase();
+        const motoDescription = card.querySelector('.text-white\\/70').textContent.toLowerCase();
+        
+        if (motoName.includes(term) || motoBrand.includes(term) || motoDescription.includes(term)) {
+          card.style.display = 'block';
+          setTimeout(() => {
+            card.classList.add('visible');
+            card.classList.remove('slide-out');
+          }, 50);
+          foundCount++;
+        } else {
+          card.classList.remove('visible');
+          card.classList.add('slide-out');
+          setTimeout(() => {
+            card.style.display = 'none';
+          }, 600);
+        }
+      });
+
+      if (foundCount === 0) {
+        document.getElementById('motos-grid').classList.add('hidden');
+        document.getElementById('noResultsMessage').classList.remove('hidden');
+      } else {
+        document.getElementById('motos-grid').classList.remove('hidden');
+        document.getElementById('noResultsMessage').classList.add('hidden');
+      }
+    }
+
+    document.getElementById('searchInput').addEventListener('input', function(e) {
+      searchMotos(e.target.value);
+    });
+
+    function showPage(pageNumber) {
+      if (isSearching) return;
+      
+      const allMotoCards = document.querySelectorAll('.moto-card');
+      const totalPages = Math.ceil(allMotoCards.length / motosPerPage);
+      const startIndex = pageNumber * motosPerPage;
+      const endIndex = Math.min(startIndex + motosPerPage, allMotoCards.length);
+      
+      // Remove visibilidade de todos primeiro
+      allMotoCards.forEach((card) => {
+        card.classList.remove('visible');
+      });
+      
+      // Aguarda animação, depois esconde/mostra cards
+      setTimeout(() => {
+        allMotoCards.forEach((card, index) => {
+          if (index >= startIndex && index < endIndex) {
+            card.classList.remove('hidden-card');
+          } else {
+            card.classList.add('hidden-card');
+          }
+        });
+        
+        // Mostra cards da página atual com animação
+        setTimeout(() => {
+          allMotoCards.forEach((card, index) => {
+            if (index >= startIndex && index < endIndex) {
+              card.classList.add('visible');
+            }
+          });
+        }, 50);
+      }, 450);
+      
+      updateButtonVisibility(totalPages);
+    }
+
+    document.getElementById('loadMoreBtn').addEventListener('click', navigateNext);
+    document.getElementById('loadPrevBtn').addEventListener('click', navigatePrev);
+
+    function updateButtonVisibility(totalPages) {
+      if (isSearching) return;
+
+      // Desktop arrows
+      if (currentPage >= totalPages - 1) {
+        document.getElementById('loadMoreBtn').style.opacity = '0';
+        document.getElementById('loadMoreBtn').style.pointerEvents = 'none';
+      } else {
+        document.getElementById('loadMoreBtn').style.opacity = '1';
+        document.getElementById('loadMoreBtn').style.pointerEvents = 'auto';
+      }
+      
+      if (currentPage <= 0) {
+        document.getElementById('loadPrevBtn').style.opacity = '0';
+        document.getElementById('loadPrevBtn').style.pointerEvents = 'none';
+      } else {
+        document.getElementById('loadPrevBtn').style.opacity = '1';
+        document.getElementById('loadPrevBtn').style.pointerEvents = 'auto';
+      }
+
+      // Mobile buttons
+      const prevBtnMobile = document.getElementById('prevBtnMobile');
+      const nextBtnMobile = document.getElementById('nextBtnMobile');
+      
+      if (prevBtnMobile) {
+        if (currentPage <= 0) {
+          prevBtnMobile.style.opacity = '0.3';
+          prevBtnMobile.disabled = true;
+        } else {
+          prevBtnMobile.style.opacity = '1';
+          prevBtnMobile.disabled = false;
+        }
+      }
+      
+      if (nextBtnMobile) {
+        if (currentPage >= totalPages - 1) {
+          nextBtnMobile.style.opacity = '0.3';
+          nextBtnMobile.disabled = true;
+        } else {
+          nextBtnMobile.style.opacity = '1';
+          nextBtnMobile.disabled = false;
+        }
+      }
+    }
+
+    // Formulário de contato
+    document.getElementById('contact-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const form = this;
+      const formSuccess = document.getElementById('form-success');
+      form.style.display = 'none';
+      formSuccess.classList.remove('hidden');
+      
+      setTimeout(() => {
+        formSuccess.classList.add('hidden');
+        form.style.display = 'block';
+        form.reset();
+      }, 5000);
+    });
+
+    // Verificar se deve abrir painel admin via hash
+    if (window.location.hash === '#admin-panel') {
+      showAdminLogin();
+    }
+
+    // Inicializar
+    initDataSDK().then(() => {
+      renderMotoCards();
+      showPage(0);
+    });
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9c058ec302bbf1dd',t:'MTc2ODgxNzU4OC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
