@@ -8,8 +8,6 @@
   <link rel="shortcut icon" type="image/png" href="https://i.imgur.com/FyCqY2d.png">
   <link rel="apple-touch-icon" href="https://i.imgur.com/FyCqY2d.png">
   <script src="https://cdn.tailwindcss.com"></script>
-  <script src="/_sdk/element_sdk.js"></script>
-  <script src="/_sdk/data_sdk.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
   <style>
     body {
@@ -529,16 +527,6 @@
         indicator.style.background = 'linear-gradient(135deg, #0ea5e9 0%, #3b82f6 100%)';
       }, 3000);
     }
-
-    // Configuração do Data SDK para persistência
-    let dataInitialized = false;
-    let currentData = [];
-
-    // Handler do Data SDK
-    const dataHandler = {
-      onDataChanged(data) {
-        console.log('📊 Dados recebidos do servidor:', data.length, 'registros');
-        currentData = data;
         
         // CRÍTICO: Carregar dados SEM apagar os existentes
         data.forEach(record => {
@@ -566,153 +554,7 @@
       }
     };
 
-    // Inicializar SDK
-    async function initDataSDK() {
-      if (dataInitialized) return;
-      
-      console.log('🔄 Inicializando sistema de salvamento...');
-      
-      try {
-        const result = await window.dataSdk.init(dataHandler);
-        if (result.isOk) {
-          dataInitialized = true;
-          console.log('✅ Sistema de armazenamento CONECTADO e FUNCIONANDO!');
-          console.log('💾 Todos os dados agora serão salvos permanentemente na Planilha do Canva');
-        } else {
-          console.error('❌ Erro ao conectar armazenamento:', result.error);
-          showToast('❌ Erro ao conectar sistema de salvamento', 'error');
-        }
-      } catch (error) {
-        console.error('❌ Erro ao inicializar:', error);
-        showToast('❌ Erro ao inicializar sistema', 'error');
-      }
-    }
-
-    // Salvar dados no SDK com RETRY automático
-    async function saveToSDK(motoId, dataType, dataContent, retryCount = 0) {
-      const MAX_RETRIES = 3;
-      
-      console.log(`🔵 TENTATIVA ${retryCount + 1}/${MAX_RETRIES + 1} - Salvando:`, { motoId, dataType });
-      
-      // Validações iniciais
-      if (!motoId || !dataType) {
-        const errorMsg = 'Erro: motoId ou dataType não fornecido';
-        console.error('❌', errorMsg);
-        showToast('❌ ' + errorMsg, 'error');
-        showSaveError();
-        return false;
-      }
-
-      // Garantir inicialização
-      if (!dataInitialized) {
-        console.log('⚠️ SDK não inicializado, inicializando agora...');
-        await initDataSDK();
-        
-        // Aguardar mais um pouco para garantir
-        await new Promise(resolve => setTimeout(resolve, 500));
-      }
-
-      // Verificar se SDK existe
-      if (!window.dataSdk) {
-        const errorMsg = 'Sistema de salvamento não disponível';
-        console.error('❌ CRÍTICO:', errorMsg);
-        showToast('❌ ' + errorMsg + '. Recarregue a página.', 'error');
-        showSaveError();
-        return false;
-      }
-
-      showSavingIndicator();
-
-      // Buscar registro existente
-      const existing = currentData.find(r => r.moto_id === motoId && r.data_type === dataType);
-      
-      // Converter dados para string se necessário
-      const dataString = typeof dataContent === 'string' ? dataContent : JSON.stringify(dataContent);
-      
-      console.log('📦 Preparando dados:', { 
-        motoId, 
-        dataType, 
-        tamanhoBytes: dataString.length, 
-        temExistente: !!existing,
-        totalRegistros: currentData.length
-      });
-      
-      try {
-        let result;
-        
-        if (existing) {
-          // Atualizar existente
-          console.log('📝 ATUALIZANDO registro existente');
-          console.log('📋 Dados antigos:', existing.data_json.substring(0, 100) + '...');
-          
-          existing.data_json = dataString;
-          existing.updated_at = new Date().toISOString();
-          
-          console.log('🔄 Chamando window.dataSdk.update...');
-          result = await window.dataSdk.update(existing);
-          
-        } else {
-          // Criar novo
-          console.log('➕ CRIANDO novo registro');
-          
-          const newRecord = {
-            moto_id: motoId,
-            data_type: dataType,
-            data_json: dataString,
-            updated_at: new Date().toISOString()
-          };
-          
-          console.log('📋 Novo registro:', {
-            moto_id: newRecord.moto_id,
-            data_type: newRecord.data_type,
-            tamanho: newRecord.data_json.length,
-            updated_at: newRecord.updated_at
-          });
-          
-          console.log('🔄 Chamando window.dataSdk.create...');
-          result = await window.dataSdk.create(newRecord);
-        }
-        
-        console.log('📤 Resultado:', { isOk: result.isOk, isError: result.isError });
-        
-        if (result.isOk) {
-          console.log('✅✅✅ SUCESSO TOTAL!');
-          showSavedIndicator();
-          return true;
-          
-        } else {
-          // Falhou - tentar retry
-          console.error('❌ Falhou:', result.error);
-          
-          if (retryCount < MAX_RETRIES) {
-            console.log(`🔄 Tentando novamente em 1 segundo... (${retryCount + 1}/${MAX_RETRIES})`);
-            await new Promise(resolve => setTimeout(resolve, 1000));
-            return saveToSDK(motoId, dataType, dataContent, retryCount + 1);
-          } else {
-            const errorMsg = `Falha após ${MAX_RETRIES + 1} tentativas: ${JSON.stringify(result.error)}`;
-            console.error('❌❌❌', errorMsg);
-            showToast('❌ Erro ao salvar. Tente novamente.', 'error');
-            showSaveError();
-            return false;
-          }
-        }
-        
-      } catch (error) {
-        console.error('❌❌❌ EXCEÇÃO:', error.message);
-        console.error('Stack:', error.stack);
-        
-        if (retryCount < MAX_RETRIES) {
-          console.log(`🔄 Retry após exceção... (${retryCount + 1}/${MAX_RETRIES})`);
-          await new Promise(resolve => setTimeout(resolve, 1000));
-          return saveToSDK(motoId, dataType, dataContent, retryCount + 1);
-        } else {
-          showToast('❌ Erro crítico ao salvar', 'error');
-          showSaveError();
-          return false;
-        }
-      }
-    }
-
+  
     // Banco de dados completo das 30 motos
     const motosDatabase = {
       'cb500f': { name: 'CB 500F', brand: 'Honda', year: '2024', price: 'R$ 35.990', badge: 'NOVO', description: 'Motor 471cc, potência de 50cv. Ideal para o dia a dia.', specs: { motor: '471cc bicilíndrico', potencia: '47 cv @ 8.500 rpm', torque: '4,4 kgf.m @ 7.000 rpm' }, features: ['ABS de série', 'Painel LCD', 'Econômica'] },
@@ -1109,14 +951,7 @@
       
       motoDataStorage[currentEditingMotoId] = motoData;
       
-      // Salvar no banco de dados
-      await saveToSDK(currentEditingMotoId, 'moto_data', motoData);
-      
-      showToast('✅ Informações salvas com sucesso!', 'success');
-      closeMotoEditor();
-      // NÃO recarregar painel - evita sumir o layout
-    }
-
+    
     // Sistema de gerenciamento de GALERIA de fotos
     let currentMotoId = null;
 
@@ -1256,9 +1091,7 @@
           if (processedCount === totalFiles) {
             fileInput.value = '';
             
-            // Salvar no banco de dados
-            await saveToSDK(currentMotoId, 'photos', photosStorage[currentMotoId]);
-            
+        
             // Atualizar APENAS a lista de fotos, não o layout inteiro
             renderPhotosList();
             updateAdminPanelCounters();
@@ -1296,9 +1129,7 @@
 
       urlInput.value = '';
       
-      // Salvar no banco de dados
-      await saveToSDK(currentMotoId, 'photos', photosStorage[currentMotoId]);
-      
+    
       renderPhotosList();
       updateAdminPanelCounters();
       showToast('Foto adicionada com sucesso!', 'success');
@@ -1309,9 +1140,7 @@
       
       photosStorage[currentMotoId] = photosStorage[currentMotoId].filter(p => p.id !== photoId);
       
-      // Salvar no banco de dados
-      await saveToSDK(currentMotoId, 'photos', photosStorage[currentMotoId]);
-      
+    
       renderPhotosList();
       updateAdminPanelCounters();
       showToast('Foto removida com sucesso!', 'success');
@@ -1380,9 +1209,7 @@
         // Insere na nova posição
         photos.splice(dropIndex, 0, draggedPhoto);
         
-        // Salvar nova ordem no banco de dados
-        await saveToSDK(currentMotoId, 'photos', photos);
-        
+       
         // Renderizar novamente
         renderPhotosList();
         updateAdminPanelCounters();
@@ -1560,8 +1387,7 @@
         thumbnailStorage[currentThumbnailMotoId] = e.target.result;
         fileInput.value = '';
         
-        // Salvar no banco de dados
-        await saveToSDK(currentThumbnailMotoId, 'thumbnail', e.target.result);
+     
         
         updateAdminPanelCounters();
         showToast('✅ Miniatura definida com sucesso!', 'success');
@@ -1588,22 +1414,13 @@
       thumbnailStorage[currentThumbnailMotoId] = url;
       urlInput.value = '';
       
-      // Salvar no banco de dados
-      await saveToSDK(currentThumbnailMotoId, 'thumbnail', url);
-      
+    
       updateAdminPanelCounters();
       showToast('✅ Miniatura definida com sucesso!', 'success');
       closeThumbnailManager();
     }
 
-    async function removeThumbnail() {
-      delete thumbnailStorage[currentThumbnailMotoId];
-      
-      // Remover do banco de dados
-      const existing = currentData.find(r => r.moto_id === currentThumbnailMotoId && r.data_type === 'thumbnail');
-      if (existing) {
-        await window.dataSdk.delete(existing);
-      }
+ 
       
       updateAdminPanelCounters();
       showToast('Miniatura removida com sucesso!', 'success');
@@ -2052,11 +1869,9 @@
       showAdminLogin();
     }
 
-    // Inicializar
-    initDataSDK().then(() => {
-      renderMotoCards();
-      showPage(0);
+ 
     });
   </script>
  <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9c058ec302bbf1dd',t:'MTc2ODgxNzU4OC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+
 </html>
