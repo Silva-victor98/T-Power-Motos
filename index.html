@@ -502,11 +502,86 @@ window.addEventListener("load", () => {
     return;
   }
 
-  Backendless.initApp(
-    "EADDB868-2712-430C-B386-3488057173BE",
-    "8148EBB0-CA60-4F8E-A553-C3BEBA21AE47"
-  );
-});
+  <script src="https://backendless.com/backendless.min.js"></script>
+  <script>
+    // Inicialização Backendless
+    Backendless.initApp(
+      "EADDB868-2712-430C-B386-3488057173BE",
+      "8148EBB0-CA60-4F8E-A553-C3BEBA21AE47"
+    );
+
+    // Inicialização de storages
+    const motoDataStorage = {};
+    const photosStorage = {};
+    const thumbnailStorage = {};
+
+    // Função segura de carregar dados do Backendless
+    async function loadMotos() {
+      try {
+        const data = await Backendless.Data.of('Motos').find();
+
+        data.forEach(record => {
+          if (!record || !record.moto_id || !record.data_type) return;
+
+          try {
+            switch(record.data_type) {
+              case 'moto_data':
+                motoDataStorage[record.moto_id] = JSON.parse(record.data_json || '{}');
+                break;
+              case 'thumbnail':
+                thumbnailStorage[record.moto_id] = record.data_json || '';
+                break;
+              case 'photos':
+                photosStorage[record.moto_id] = JSON.parse(record.data_json || '[]');
+                break;
+            }
+          } catch(e) {
+            console.error('Erro ao processar registro do Backendless:', record, e);
+          }
+        });
+
+        const isAdminPanelOpen = !document.getElementById('adminPanel').classList.contains('hidden');
+
+        if (!isAdminPanelOpen) {
+          renderMotoCards();
+          showPage(currentPage);
+        } else {
+          updateAdminPanelCounters();
+        }
+
+      } catch (err) {
+        console.error("Erro ao carregar dados do Backendless:", err);
+      }
+    }
+
+    // Função de renderização dos cards de motos
+    function renderMotoCards() {
+      const grid = document.getElementById('motos-grid');
+      if (!grid) return;
+      grid.innerHTML = '';
+
+      Object.keys(motoDataStorage).forEach(id => {
+        const moto = motoDataStorage[id];
+        const thumb = thumbnailStorage[id] || '';
+
+        const card = document.createElement('div');
+        card.className = 'moto-card card-gradient rounded-xl p-4';
+        card.id = `moto-card-${id}`;
+        card.innerHTML = `
+          <img src="${thumb}" alt="${moto.name}" class="thumbnail-preview mb-4 rounded-lg">
+          <h3 class="text-white font-semibold mb-2">${moto.name}</h3>
+          <p class="text-white/60 text-sm">${moto.description}</p>
+          <p class="text-sky-400 font-bold mt-2">${moto.price}</p>
+        `;
+        grid.appendChild(card);
+        setTimeout(() => card.classList.add('visible'), 100);
+      });
+    }
+
+    // Carregar motos assim que o DOM estiver pronto
+    document.addEventListener('DOMContentLoaded', () => {
+      loadMotos();
+    });
 
   then(data => {
 
@@ -1909,6 +1984,7 @@ window.addEventListener("load", () => {
  </body>
 
 </html>
+
 
 
 
