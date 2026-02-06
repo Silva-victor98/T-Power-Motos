@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>TPower Motos - Admin</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Backendless SDK -->
+  <script src="https://api.backendless.com/sdk/js/latest/backendless.min.js"></script>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #0f172a;
+      color: #fff;
+      padding: 20px;
+    }
+
+    .box {
+      max-width: 420px;
+      margin: auto;
+      background: #020617;
+      padding: 20px;
+      border-radius: 10px;
+    }
+
+    input, textarea, button {
+      width: 100%;
+      margin-top: 10px;
+      padding: 10px;
+      border-radius: 6px;
+      border: none;
+    }
+
+    button {
+      background: #22c55e;
+      color: #000;
+      font-weight: bold;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="box" id="loginBox">
+    <h2>Login Admin</h2>
+    <input type="email" id="email" placeholder="Seu e-mail" />
+    <input type="password" id="password" placeholder="Senha" />
+    <button onclick="login()">Entrar</button>
+  </div>
+
+  <div class="box" id="adminBox" style="display:none">
+    <h2>Cadastrar Moto</h2>
+
+    <input id="nome" placeholder="Nome da moto" />
+    <input id="marca" placeholder="Marca" />
+    <input id="ano" placeholder="Ano" />
+    <input id="preco" placeholder="Preço" />
+    <input id="imagem" placeholder="URL da imagem" />
+    <textarea id="descricao" placeholder="Descrição"></textarea>
+
+    <button onclick="salvarMoto()">Salvar</button>
+  </div>
+
+  <script src="/js/admin.js"></script>
+</body>
+</html>
