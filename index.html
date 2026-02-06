@@ -496,10 +496,18 @@
    </div>
   </footer>
   <script>
+window.addEventListener("load", () => {
+  if (typeof Backendless === "undefined") {
+    console.error("Backendless NÃO carregou");
+    return;
+  }
+
   Backendless.initApp(
-  "EADDB868-2712-430C-B386-3488057173BE",
-  "8148EBB0-CA60-4F8E-A553-C3BEBA21AE47"
-);
+    "EADDB868-2712-430C-B386-3488057173BE",
+    "8148EBB0-CA60-4F8E-A553-C3BEBA21AE47"
+  );
+});
+
   then(data => {
 
     // CRÍTICO: Carregar dados SEM apagar os existentes
@@ -1901,6 +1909,7 @@
  </body>
 
 </html>
+
 
 
 
